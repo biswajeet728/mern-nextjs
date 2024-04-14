@@ -1,8 +1,7 @@
 "use client";
 
-import { useLoginMutation, useRegisterMutation } from "@/redux/api/authQuery";
-import { DefaultResponse } from "@/redux/types";
-import { addAccessAndRefreshToken } from "@/utils/storage";
+import axiosInstance from "@/lib/axios";
+import { DefaultResponse } from "@/types";
 import { SignUpInput, signUpSchema } from "@/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -13,11 +12,12 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "sonner";
 
 interface SignUpProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,9 +37,9 @@ function SignUp({ setOpen, handleFormToggle }: SignUpProps) {
     mode: "all",
   });
 
-  const handleSignInSubmit = async (data: any) => {
+  const handleSignInSubmit = async (data: SignUpInput) => {
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post<DefaultResponse>(
         `${process.env.NEXT_PUBLIC_API_URL}auth/signup`,
         {
           username: data.username,
@@ -53,10 +53,17 @@ function SignUp({ setOpen, handleFormToggle }: SignUpProps) {
 
       if (res.data.success) {
         setOpen(false);
+        toast.success(res.data.message || "Account Registered successfully");
         router.refresh();
       }
+      handleFormToggle && handleFormToggle();
     } catch (error) {
-      console.log("An error occurred: ", error);
+      // check if the error is an AxiosError
+      if (error instanceof AxiosError) {
+        if (error.response?.data) {
+          toast.error(error.response.data.message || "An error occurred");
+        }
+      }
     }
   };
 
@@ -133,6 +140,8 @@ function SignUp({ setOpen, handleFormToggle }: SignUpProps) {
             fullWidth
             className="items-center justify-center gap-2"
             type="submit"
+            loading={isSubmitting}
+            disabled={!isValid}
           >
             Sign Up
           </Button>

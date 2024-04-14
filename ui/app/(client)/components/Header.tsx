@@ -9,16 +9,7 @@ import UserBox from "./UserBox";
 
 import { LuHeart, LuShoppingCart } from "react-icons/lu";
 import { AuthModal } from "./AuthModal";
-import { Profile } from "@/redux/types";
 import { useSearchParams } from "next/navigation";
-
-export type TokenResponse = {
-  tokens: {
-    refresh: string;
-    access: string;
-  };
-  profile: Profile;
-};
 
 function Header({ authStatus }: { authStatus: any }) {
   const [open, setOpen] = React.useState(false);

@@ -1,7 +1,8 @@
 import "server-only";
 import { cookies } from "next/headers";
-import axios from "axios";
 import { cache } from "react";
+import axiosInstance from "@/lib/axios";
+import { ProfileType } from "@/types";
 
 export const checkAuth = cache(async () => {
   const cookie = cookies();
@@ -11,11 +12,14 @@ export const checkAuth = cache(async () => {
   if (!accessToken || !refreshToken) return null;
 
   try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}auth/me`, {
-      headers: {
-        Authorization: `Bearer ${accessToken?.value}`,
-      },
-    });
+    const res = await axiosInstance.get<ProfileType>(
+      `${process.env.NEXT_PUBLIC_API_URL}auth/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken?.value}`,
+        },
+      }
+    );
 
     return res.data;
   } catch (error) {

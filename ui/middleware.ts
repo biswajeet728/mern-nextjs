@@ -14,9 +14,7 @@ export async function middleware(request: NextRequest) {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  console.log("res.status: ", res.status);
   if (res.status === 401) {
-    console.log(refreshToken, "refreshToken111");
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}auth/refresh-token`,
@@ -30,7 +28,6 @@ export async function middleware(request: NextRequest) {
       );
 
       const data = await res.json();
-      console.log("data: ", data);
       if (data.success) {
         const response = NextResponse.redirect(request.url);
         response.cookies.set("accessToken", data.tokens.access, {

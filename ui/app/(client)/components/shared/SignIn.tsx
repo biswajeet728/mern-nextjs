@@ -1,7 +1,5 @@
 "use client";
 
-import { useLoginMutation } from "@/redux/api/authQuery";
-import { DefaultResponse } from "@/redux/types";
 import { SignInInput, signinSchema } from "@/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -12,8 +10,7 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { memo } from "react";
 import { useForm } from "react-hook-form";
@@ -41,9 +38,7 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
     mode: "all",
   });
 
-  // const [login, { isLoading: loginLoading }] = useLoginMutation();
-
-  const handleSignInSubmit = async (data: any) => {
+  const handleSignInSubmit = async (data: SignInInput) => {
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}auth/signin`,
@@ -64,8 +59,14 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
         setOpen(false);
         router.refresh();
       }
+      handleFormToggle && handleFormToggle();
     } catch (error) {
-      console.log("An error occurred: ", error);
+      // check if the error is an AxiosError
+      if (error instanceof AxiosError) {
+        if (error.response?.data) {
+          toast.error(error.response.data.message || "An error occurred");
+        }
+      }
     }
   };
 
@@ -125,6 +126,8 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
             fullWidth
             className="items-center justify-center gap-2"
             type="submit"
+            loading={isSubmitting}
+            disabled={!isValid}
           >
             Sign In
           </Button>
