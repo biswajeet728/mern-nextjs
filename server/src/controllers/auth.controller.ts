@@ -165,13 +165,13 @@ export const requestNewAccessToken: RequestHandler = TryCatch(
 
     await user.save();
 
-    // res.cookie("accessToken", newAccessToken, {
-    //   httpOnly: true,
-    // });
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+    });
 
-    // res.cookie("refreshToken", newRefreshToken, {
-    //   httpOnly: true,
-    // });
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+    });
 
     res.json({
       success: true,

@@ -6,24 +6,10 @@ import { Button, Navbar, Typography, Input } from "@material-tailwind/react";
 import Link from "next/link";
 import Image from "next/image";
 import UserBox from "./UserBox";
-import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 import { LuHeart, LuShoppingCart } from "react-icons/lu";
 import { AuthModal } from "./AuthModal";
-import { useDispatch, useSelector } from "react-redux";
-import { toogleAuthModal } from "@/redux/reducer/ui.reducer";
-import {
-  addAccessAndRefreshToken,
-  getAccessToken,
-  getRefreshToken,
-  removeAccessAndRefreshToken,
-} from "@/utils/storage";
-import axios, { AxiosError, AxiosInstance } from "axios";
-import { setUser } from "@/redux/reducer/auth.reducer";
 import { Profile } from "@/redux/types";
-import { RootState } from "@/redux/store";
-import { clientAxios, runAxiosAsync } from "@/utils";
-import { useRouter } from "next/router";
 
 export type TokenResponse = {
   tokens: {

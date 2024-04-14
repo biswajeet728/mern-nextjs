@@ -12,15 +12,15 @@ import {
 } from "@material-tailwind/react";
 import Link from "next/link";
 import { Profile } from "@/redux/types";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import axiosInstance from "@/lib/axios";
 
 export default function UserBox({ user }: { user: Profile }) {
   const router = useRouter();
 
   const handleSignInSubmit = async () => {
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_API_URL}auth/signout`,
         {},
         {

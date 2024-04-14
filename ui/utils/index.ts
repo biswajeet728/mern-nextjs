@@ -7,10 +7,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const clientAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-});
-
 export const runAxiosAsync = async <T>(
   promise: Promise<AxiosResponse<T>>
 ): Promise<T | null> => {
