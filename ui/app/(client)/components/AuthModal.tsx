@@ -7,9 +7,11 @@ import { Dialog } from "@material-tailwind/react";
 import SignUp from "./shared/SignUp";
 import SignIn from "./shared/SignIn";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 export function AuthModal({ open, setOpen }: any) {
   const [formType, setFormType] = React.useState<"login" | "register">("login");
+  const router = useRouter();
 
   const { reset } = useForm({
     mode: "all",
@@ -25,7 +27,10 @@ export function AuthModal({ open, setOpen }: any) {
       placeholder={""}
       size="md"
       open={open}
-      handler={() => setOpen(false)}
+      handler={() => {
+        setOpen(false);
+        router.push("/");
+      }}
       className="bg-transparent shadow-none"
     >
       {formType === "register" ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button, Navbar, Typography, Input } from "@material-tailwind/react";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import UserBox from "./UserBox";
 import { LuHeart, LuShoppingCart } from "react-icons/lu";
 import { AuthModal } from "./AuthModal";
 import { Profile } from "@/redux/types";
+import { useSearchParams } from "next/navigation";
 
 export type TokenResponse = {
   tokens: {
@@ -21,6 +22,18 @@ export type TokenResponse = {
 
 function Header({ authStatus }: { authStatus: any }) {
   const [open, setOpen] = React.useState(false);
+  const searchParams = useSearchParams();
+  const openLogin = searchParams.get("login");
+
+  useEffect(() => {
+    if (openLogin) {
+      setOpen(true);
+    }
+
+    return () => {
+      setOpen(false);
+    };
+  }, []);
 
   return (
     <div>

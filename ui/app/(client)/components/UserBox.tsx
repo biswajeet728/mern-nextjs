@@ -29,6 +29,7 @@ export default function UserBox({ user }: { user: Profile }) {
       );
 
       if (res.data.success) {
+        router.push("/");
         router.refresh();
       }
     } catch (error) {

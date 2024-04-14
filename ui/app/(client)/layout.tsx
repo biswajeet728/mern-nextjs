@@ -21,6 +21,7 @@ export default async function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
+  // searchParams: URLSearchParams;
 }>) {
   const authStatus = await checkAuth();
   return (

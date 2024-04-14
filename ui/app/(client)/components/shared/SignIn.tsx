@@ -14,7 +14,7 @@ import {
 } from "@material-tailwind/react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
@@ -27,6 +27,9 @@ interface SignInProps {
 
 function SignIn({ setOpen, handleFormToggle }: SignInProps) {
   const router = useRouter();
+  const params = useSearchParams();
+  const redirectPath = params.get("redirect");
+
   const {
     register: registerForm,
     handleSubmit,
@@ -54,6 +57,10 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
       );
 
       if (res.data.success) {
+        if (redirectPath) {
+          router.push(redirectPath);
+        }
+
         setOpen(false);
         router.refresh();
       }

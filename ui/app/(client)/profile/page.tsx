@@ -1,8 +1,16 @@
 import React from "react";
 import AvtarBox from "./components/AvtarBox";
 import UpdateProfileForm from "./components/UpdateProfileForm";
+import { checkAuth } from "@/services/auth/checkAuth";
+import { redirect } from "next/navigation";
 
-export default function page() {
+export default async function page() {
+  const user = await checkAuth();
+
+  if (!user) {
+    redirect("/?login=true&redirect=/profile");
+  }
+
   return (
     <div className="p-4">
       <div className="max-w-screen-xl mx-auto bg-blue-gray-50 shadow-lg rounded-md p-4">

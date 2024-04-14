@@ -1,6 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { cache } from "react";
 
 export const checkAuth = cache(async () => {
