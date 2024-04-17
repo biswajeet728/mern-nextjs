@@ -1,5 +1,6 @@
 "use client";
 
+import getGoogleOAuth from "@/utils/googleauth";
 import { SignInInput, signinSchema } from "@/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,6 +12,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import axios, { AxiosError } from "axios";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { memo } from "react";
 import { useForm } from "react-hook-form";
@@ -140,15 +142,15 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
             Or
           </Typography>
 
-          <Button
-            placeholder={""}
-            className="flex items-center justify-center gap-3"
-            fullWidth
-            onClick={() => console.log("Login with Google")} // Implement Google login
+          <Link
+            href={getGoogleOAuth()}
+            className="flex items-center justify-center gap-3 bg-gradient-to-tr from-gray-900 to-gray-800 text-white shadow-md shadow-gray-900/10 rounded-lg p-2 w-full"
           >
             <FcGoogle size={22} />
-            Login with Google
-          </Button>
+            <Typography placeholder={""} variant="h6">
+              Login with Google
+            </Typography>
+          </Link>
 
           <Typography placeholder={""} className="mt-4 flex justify-center">
             Don't have an account?

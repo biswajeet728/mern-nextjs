@@ -19,6 +19,13 @@ export const config = cleanEnv(process.env, {
   NODEMAILER_USER: str({}),
   NODEMAILER_PASS: str({}),
   NODEMAILER_FROM: str({}),
+
+  GOOGLE_CLIENT_ID: str({}),
+  GOOGLE_CLIENT_SECRET: str({}),
+
+  GOOGLE_CALLBACK_URL: str({}),
+
+  SESSION_SECRET: str({}),
 });
 
 export class ErrorHandler extends Error {

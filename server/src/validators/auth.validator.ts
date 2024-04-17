@@ -22,7 +22,8 @@ export const signUpSchema = z.object({
     .min(6, {
       message: "Password must be at least 6 characters",
     })
-    .max(255),
+    .max(255)
+    .optional(),
   role: z.enum(["user", "admin"]).default("user"),
   avatar: z
     .object({

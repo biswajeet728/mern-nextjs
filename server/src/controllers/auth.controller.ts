@@ -7,6 +7,7 @@ import crypto from "crypto";
 import { sendEmail } from "@/utils/features";
 import AuthVerificationTokenModel from "@/models/AuthVerficationToken";
 import jwt from "jsonwebtoken";
+import { getGoogleAccessTokens, getGoogleUser } from "@/services/auth.service";
 
 export const createNewUser: RequestHandler = TryCatch(
   async (req: Request<{}, {}, IUser>, res, next) => {
@@ -234,3 +235,58 @@ export const signOut: RequestHandler = TryCatch(async (req, res, next) => {
 
   res.json({ success: true, message: "Logged out successfully" });
 });
+
+export const googleOauthHandler: RequestHandler = TryCatch(
+  async (req, res, next) => {
+    // get the code from qs
+    const code = req.query.code as string;
+
+    // get id and the accessToken
+    const { id_token, access_token } = await getGoogleAccessTokens({ code });
+
+    const googleUser = await getGoogleUser({ id_token, access_token });
+
+    if (!googleUser) {
+      return next(new ErrorHandler("Google user not found", 400));
+    }
+
+    // find the user and upate fields
+
+    let user;
+
+    if (googleUser.email) {
+      user = await User.findOne({ email: googleUser.email });
+    }
+
+    if (!user) {
+      user = await User.create({
+        username: googleUser.name,
+        email: googleUser.email,
+        isSocialLogin: true,
+        verified: googleUser.verified_email,
+        googleId: googleUser.id,
+      });
+    }
+
+    const accessToken = jwt.sign({ id: user._id }, config.JWT_SECRET, {
+      expiresIn: "5m",
+    });
+
+    const refreshToken = jwt.sign({ id: user._id }, config.JWT_SECRET);
+
+    if (!user.tokens) user.tokens = [refreshToken];
+    else user.tokens.push(refreshToken);
+
+    await user.save();
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+    });
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+    });
+
+    res.redirect(config.CLIENT_URL);
+  }
+);

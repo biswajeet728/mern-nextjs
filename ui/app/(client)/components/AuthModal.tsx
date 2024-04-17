@@ -30,6 +30,7 @@ export function AuthModal({ open, setOpen }: any) {
       handler={() => {
         setOpen(false);
         router.push("/");
+        setFormType("login");
       }}
       className="bg-transparent shadow-none"
     >

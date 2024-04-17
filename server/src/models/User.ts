@@ -18,7 +18,6 @@ const UserSchema = new Schema<IUser, {}, Methods>({
   },
   password: {
     type: String,
-    required: true,
   },
   role: {
     type: String,
@@ -62,5 +61,5 @@ UserSchema.methods.comparePassword = async function (password) {
   return await compare(password, this.password);
 };
 
-const AuthVerificationTokenModel = model("User", UserSchema);
-export default AuthVerificationTokenModel;
+const User = model("User", UserSchema);
+export default User;
