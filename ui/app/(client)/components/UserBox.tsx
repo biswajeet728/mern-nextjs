@@ -130,21 +130,6 @@ export default function UserBox({ user }: { user: Profile | null }) {
               </Typography>
             </MenuItem>
           </Link>
-          {user.profile.role === "admin" && (
-            <Link href="/notifications">
-              <MenuItem placeholder={""} className="flex items-center gap-2">
-                <MdSpaceDashboard className="w-6 h-6" />
-
-                <Typography
-                  placeholder={""}
-                  variant="small"
-                  className="font-medium mons"
-                >
-                  Dashboard
-                </Typography>
-              </MenuItem>
-            </Link>
-          )}
           <hr className="my-2 border-blue-gray-50" />
           <MenuItem
             placeholder={""}

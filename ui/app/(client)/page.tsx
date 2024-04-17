@@ -6,12 +6,14 @@ import HomeBanner from "./components/HomeBanner";
 
 export default async function Home() {
   return (
-    <main className="w-full mons">
-      <Hero />
-      <Downlist />
-      <BestSelling />
-      <NewArrival />
-      <HomeBanner />
-    </main>
+    <div className="w-full mons min-h-screen">
+      <main>
+        <Hero />
+        <Downlist />
+        <BestSelling />
+        <NewArrival />
+        <HomeBanner />
+      </main>
+    </div>
   );
 }
