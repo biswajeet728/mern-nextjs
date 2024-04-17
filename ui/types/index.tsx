@@ -7,7 +7,14 @@ export interface ProfileType {
   id: string;
   username: string;
   email: string;
+  role: string;
   verified: boolean;
-  avatar?: object;
+  avatar?: {
+    url: string;
+  };
   bio?: string;
+}
+
+export interface Profile {
+  profile: ProfileType;
 }

@@ -57,11 +57,16 @@ function SignUp({ setOpen, handleFormToggle }: SignUpProps) {
         router.refresh();
       }
       handleFormToggle && handleFormToggle();
-    } catch (error) {
+    } catch (error: any) {
+      // console.log(JSON.stringify(error.response.data.error[0].message, null, 2));
       // check if the error is an AxiosError
       if (error instanceof AxiosError) {
         if (error.response?.data) {
-          toast.error(error.response.data.message || "An error occurred");
+          toast.error(
+            error.response.data.message ||
+              error.response.data.error[0].message ||
+              "An error occurred"
+          );
         }
       }
     }

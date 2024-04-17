@@ -16,7 +16,10 @@ export const signinSchema = z.object({
 });
 
 export const signUpSchema = signinSchema.extend({
-  username: z.string(),
+  username: z
+    .string()
+    .min(1, "Username is required.")
+    .max(8, "Username must be less than 8 characters."),
 });
 
 export type SignInInput = z.infer<typeof signinSchema>;

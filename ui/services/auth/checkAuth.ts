@@ -2,7 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import axiosInstance from "@/lib/axios";
-import { ProfileType } from "@/types";
+import { Profile } from "@/types";
 
 export const checkAuth = cache(async () => {
   const cookie = cookies();
@@ -12,7 +12,7 @@ export const checkAuth = cache(async () => {
   if (!accessToken || !refreshToken) return null;
 
   try {
-    const res = await axiosInstance.get<ProfileType>(
+    const res = await axiosInstance.get<Profile>(
       `${process.env.NEXT_PUBLIC_API_URL}auth/me`,
       {
         headers: {

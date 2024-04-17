@@ -10,8 +10,9 @@ import UserBox from "./UserBox";
 import { LuHeart, LuShoppingCart } from "react-icons/lu";
 import { AuthModal } from "./AuthModal";
 import { useSearchParams } from "next/navigation";
+import { Profile } from "@/types";
 
-function Header({ authStatus }: { authStatus: any }) {
+function Header({ authStatus }: { authStatus: Profile | null }) {
   const [open, setOpen] = React.useState(false);
   const searchParams = useSearchParams();
   const openLogin = searchParams.get("login");
