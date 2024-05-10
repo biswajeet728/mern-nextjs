@@ -17,19 +17,23 @@ import Image from "next/image";
 import { IoFootball } from "react-icons/io5";
 import { GiClothes } from "react-icons/gi";
 import { IoLaptopOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const navListMenuItems = [
   {
     title: "Sports",
     icon: IoFootball,
+    catRef: `/shop?cat=${process.env.NEXT_PUBLIC_SPORTS_CAT_ID}`,
   },
   {
     title: "Fashion",
     icon: GiClothes,
+    catRef: `/shop?cat=${process.env.NEXT_PUBLIC_FASHION_CAT_ID}`,
   },
   {
     title: "Electronics",
     icon: IoLaptopOutline,
+    catRef: `/shop?cat=${process.env.NEXT_PUBLIC_ELECTRONICS_CAT_ID}`,
   },
 ];
 
@@ -37,8 +41,8 @@ export default function Hero() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
-  const renderItems = navListMenuItems.map(({ icon, title }, key) => (
-    <a href="#" key={key}>
+  const renderItems = navListMenuItems.map(({ icon, title, catRef }, key) => (
+    <Link href={catRef} key={key}>
       <MenuItem placeholder={""} className="flex items-center gap-3 rounded-lg">
         <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
           {" "}
@@ -58,11 +62,11 @@ export default function Hero() {
           </Typography>
         </div>
       </MenuItem>
-    </a>
+    </Link>
   ));
 
   return (
-    <div className="p-3">
+    <div className="p-3 pt-48 md:pt-20">
       {/* create overlay */}
 
       <div className="relative cursor-default">
@@ -74,7 +78,7 @@ export default function Hero() {
           sizes="100%"
           className="rounded-md shadow-md h-[625px] object-cover w-full"
         />
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-20 z-0"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-20"></div>
 
         <div className="absolute top-2 left-2">
           <Menu

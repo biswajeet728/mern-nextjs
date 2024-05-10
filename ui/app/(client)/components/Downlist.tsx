@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
+import Link from "next/link";
 
 function Downlist() {
   return (
@@ -41,14 +42,16 @@ function Downlist() {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               </Typography>
 
-              <Button
-                placeholder={""}
-                variant="gradient"
-                size="md"
-                className="mt-3"
-              >
-                Browse
-              </Button>
+              <Link href={`/shop?cat=${process.env.NEXT_PUBLIC_SPORTS_CAT_ID}`}>
+                <Button
+                  placeholder={""}
+                  variant="gradient"
+                  size="md"
+                  className="mt-3"
+                >
+                  Browse
+                </Button>
+              </Link>
             </div>
           </Card>
           <div className="flex flex-col gap-3 flex-1">
@@ -96,14 +99,18 @@ function Downlist() {
                 >
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 </Typography>
-                <Button
-                  placeholder={""}
-                  variant="gradient"
-                  size="md"
-                  className="mt-3"
+                <Link
+                  href={`/shop?cat=${process.env.NEXT_PUBLIC_FASHION_CAT_ID}`}
                 >
-                  Browse
-                </Button>
+                  <Button
+                    placeholder={""}
+                    variant="gradient"
+                    size="md"
+                    className="mt-3"
+                  >
+                    Browse
+                  </Button>
+                </Link>
               </div>
             </Card>
             <Card
@@ -150,14 +157,18 @@ function Downlist() {
                 >
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 </Typography>
-                <Button
-                  placeholder={""}
-                  variant="gradient"
-                  size="md"
-                  className="mt-3"
+                <Link
+                  href={`/shop?cat=${process.env.NEXT_PUBLIC_ELECTRONICS_CAT_ID}`}
                 >
-                  Browse
-                </Button>
+                  <Button
+                    placeholder={""}
+                    variant="gradient"
+                    size="md"
+                    className="mt-3"
+                  >
+                    Browse
+                  </Button>
+                </Link>
               </div>
             </Card>
           </div>

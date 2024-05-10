@@ -1,16 +1,30 @@
 import React from "react";
 import SearchInput from "../shared/SearchInput";
-import Image from "next/image";
 import ProductCard from "../../shared/ProductCard";
+import { MainProduct } from "@/types";
+import Pagination from "../shared/Pagination";
 
-export default function ProductView() {
+export default async function ProductView({
+  products,
+  limit,
+}: {
+  products: MainProduct[];
+  limit?: number;
+}) {
   return (
     <div className="flex-1 h-full p-2 bg-white border border-blue-gray-100">
       <div>
         <SearchInput />
       </div>
       <div className="my-3 p-3 bg-blue-gray-50">
-        <div className="hidden md:block relative h-[300px]">
+        {products.length === 0 && (
+          <div className="flex items-center justify-center h-[300px]">
+            <h3 className="mons text-lg font-semibold text-gray-800">
+              No Products Found
+            </h3>
+          </div>
+        )}
+        {/* <div className="hidden md:block relative h-[300px]">
           <Image
             src={"/images/shop-banner.png"}
             alt="banner"
@@ -19,7 +33,6 @@ export default function ProductView() {
             className="rounded-md w-full h-full object-cover"
           />
 
-          {/* overlay */}
           <div className="absolute inset-0 bg-black bg-opacity-20 rounded-md"></div>
 
           <div className="absolute top-1/3 left-5">
@@ -30,15 +43,15 @@ export default function ProductView() {
               Filter. Choose. Buy. Elevate Your Shopping Experience.
             </h4>
           </div>
+        </div> */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-0 w-fit">
+          {products.map((product) => (
+            <ProductCard fromBrowse key={product._id} product={product} />
+          ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-0 md:mt-5 w-fit">
-          <ProductCard fromBrowse />
-          <ProductCard fromBrowse />
-          <ProductCard fromBrowse />
-          <ProductCard fromBrowse />
-          <ProductCard fromBrowse />
-          <ProductCard fromBrowse />
-        </div>
+      </div>
+      <div className="flex justify-end px-3">
+        <Pagination products={products} limit={limit} />
       </div>
     </div>
   );

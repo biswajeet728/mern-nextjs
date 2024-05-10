@@ -13,7 +13,7 @@ export default async function page() {
 
   return (
     <div className="p-4">
-      <div className="max-w-screen-xl mx-auto bg-blue-gray-50 shadow-lg rounded-md p-4">
+      <div className="max-w-screen-xl mx-auto bg-blue-gray-50 shadow-lg rounded-md p-4 mt-20">
         <div className="h-[550px]">
           <div className="h-full border border-black border-opacity-15 rounded-md p-4">
             <div className="flex gap-4 h-full">

@@ -4,12 +4,13 @@ import Image from "next/image";
 import React from "react";
 import Heading from "../shared/Heading";
 import { Button, Typography } from "@material-tailwind/react";
+import Link from "next/link";
 
 function page() {
   return (
-    <div className="p-4 max-w-full md:max-w-screen-xl mx-auto -mt-3 pb-0 md:pb-12">
+    <div className="p-4 max-w-full md:max-w-screen-xl mx-auto pb-0 md:pb-12">
       <Heading children="About Us" />
-      <div className="h-screen md:h-[65vh]">
+      <div className="h-screen md:h-[65vh] mt-10">
         <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="h-full bg-blue-gray-50 p-3 rounded-md">
             <div className="h-full w-full bg-white shadow-md flex items-center justify-center">
@@ -18,7 +19,6 @@ function page() {
                 alt="hero"
                 width={350}
                 height={350}
-                objectFit="cover"
                 className="object-cover self-center w-[250px] h-[250px] md:w-auto md:h-auto"
               />
             </div>
@@ -52,9 +52,11 @@ function page() {
               and every click unveils a world of possibilities.
             </Typography>
 
-            <Button placeholder={""} size="md" variant="gradient">
-              Check Our Products
-            </Button>
+            <Link href="/shop">
+              <Button placeholder={""} size="md" variant="gradient">
+                Check Our Products
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

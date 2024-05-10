@@ -136,8 +136,6 @@ export const requestNewAccessToken: RequestHandler = TryCatch(
       id: string;
     };
 
-    console.log(payload, "payload");
-
     if (!payload)
       return next(
         new ErrorHandler("Unauthorized Request | Access Denied", 400)

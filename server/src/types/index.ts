@@ -57,3 +57,35 @@ export interface GoogleUserResult {
   picture: string;
   locale: string;
 }
+
+export interface IProductResponse {
+  name: string;
+  slug: string;
+  price: number;
+  salePrice?: number;
+  description: string;
+  images: { url: string; public_id: string }[];
+  category: string;
+  stock: number;
+  isPublished: boolean;
+  isBestSelling?: boolean;
+  isFeatured?: boolean;
+}
+
+export interface IProduct extends Document {
+  name: string;
+  price: number;
+  slug: string;
+  category: string;
+  description: string;
+  images: Image[];
+  salePrice?: number;
+  isBestSelling?: boolean;
+  stock: number;
+  isPublished: boolean;
+  isFeatured?: boolean;
+}
+
+export type Image = {
+  file: File;
+};

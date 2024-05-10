@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { cleanEnv, str, num } from "envalid";
-import nodemailer from "nodemailer";
+
+import path from "path";
 
 export const config = cleanEnv(process.env, {
   MONGO_URI: str(),
@@ -16,6 +17,7 @@ export const config = cleanEnv(process.env, {
   }),
   CLIENT_URL: str({}),
   NEXT_PUBLIC_API_URL: str({}),
+  ADMIN_CLIENT_URL: str({}),
   NODEMAILER_USER: str({}),
   NODEMAILER_PASS: str({}),
   NODEMAILER_FROM: str({}),
@@ -26,6 +28,10 @@ export const config = cleanEnv(process.env, {
   GOOGLE_CALLBACK_URL: str({}),
 
   SESSION_SECRET: str({}),
+
+  CLOUDINARY_NAME: str({}),
+  CLOUDINARY_API_KEY: str({}),
+  CLOUDINARY_API_SECRET: str({}),
 });
 
 export class ErrorHandler extends Error {

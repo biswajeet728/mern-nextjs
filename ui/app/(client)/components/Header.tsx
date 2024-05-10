@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, Navbar, Typography, Input } from "@material-tailwind/react";
 import Link from "next/link";
@@ -10,12 +10,17 @@ import UserBox from "./UserBox";
 import { LuHeart, LuShoppingCart } from "react-icons/lu";
 import { AuthModal } from "./AuthModal";
 import { useSearchParams } from "next/navigation";
-import { Profile } from "@/types";
+import { ProductResponse, ProductType, Profile } from "@/types";
+import axios from "axios";
+import SearchResults from "./shared/SearchResults";
 
 function Header({ authStatus }: { authStatus: Profile | null }) {
   const [open, setOpen] = React.useState(false);
   const searchParams = useSearchParams();
   const openLogin = searchParams.get("login");
+
+  const [queryText, setQueryText] = useState("");
+  const [searchResults, setSearchResults] = useState<ProductType[]>([]);
 
   useEffect(() => {
     if (openLogin) {
@@ -27,13 +32,42 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
     };
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      if (!queryText) {
+        setSearchResults([]);
+        return false;
+      }
+
+      try {
+        const res = await axios.get<ProductResponse>(
+          `${process.env.NEXT_PUBLIC_CATALOGUE_URL}products`,
+          {
+            params: {
+              q: queryText,
+            },
+          }
+        );
+
+        setSearchResults(res.data.products);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.response?.data);
+          setSearchResults([]);
+        }
+      }
+    })();
+  }, [queryText]);
+
+  // process.env.NEXT_PUBLIC_CATALOGUE_URL
+
   return (
     <div>
       <Navbar
         placeholder={""}
         variant="filled"
         fullWidth
-        className={`w-full shadow-none border border-b border-blue-gray-100 bg-gray-200 px-4 py-3 z-10`}
+        className={`w-full fixed shadow-none border border-b border-blue-gray-100 bg-gray-200 px-4 py-3 z-50`}
       >
         <div className="flex flex-col md:flex-row justify-between gap-3 text-white">
           <div className="flex gap-2 items-center">
@@ -90,10 +124,16 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
               color="black"
               label="Type here..."
               className="mons"
+              value={queryText}
               containerProps={{
-                className: "w-full md:min-w-[350px] mons",
+                className: "w-full md:min-w-[450px] mons",
               }}
+              onChange={(e) => setQueryText(e.target.value)}
             />
+
+            {searchResults.length > 0 && (
+              <SearchResults searchResults={searchResults} />
+            )}
           </div>
           <div>
             <div className="flex -mb-2 mt-2 w-full gap-5 md:hidden">

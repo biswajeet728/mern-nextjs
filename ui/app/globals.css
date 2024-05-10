@@ -9,5 +9,5 @@
 }
 
 .mons {
-  font-family: var(--font-mons);
+  font-family: var(--font-mons) !important;
 }

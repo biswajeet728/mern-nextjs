@@ -12,7 +12,6 @@ import {
 import { validate } from "@/middlewares/validate.middleware";
 import { authVerifySchema, signUpSchema } from "@/validators/auth.validator";
 import { isAuthenticated } from "@/middlewares/auth.middleware";
-import { config } from "@/utils/helper";
 
 const router = express.Router();
 

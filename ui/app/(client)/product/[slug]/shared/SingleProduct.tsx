@@ -1,5 +1,7 @@
 "use client";
 
+import { ProductSingle } from "@/services/products";
+import { MainProduct } from "@/types";
 import { Button, Typography } from "@material-tailwind/react";
 import React from "react";
 
@@ -24,10 +26,8 @@ const data = [
   },
 ];
 
-export default function SingleProduct() {
-  const [active, setActive] = React.useState(
-    "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-  );
+export default function SingleProduct({ product }: { product: MainProduct }) {
+  const [active, setActive] = React.useState(product?.images[0]?.url);
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
       <div className="col-span-full md:col-span-2 bg-blue-gray-50 px-3 py-2">
@@ -39,18 +39,20 @@ export default function SingleProduct() {
               alt=""
             />
           </div>
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-            {data.map(({ imgelink }, index) => (
-              <div key={index}>
-                <img
-                  onClick={() => setActive(imgelink)}
-                  src={imgelink}
-                  className="h-20 w-full sm:max-w-full cursor-pointer rounded-lg object-cover object-center"
-                  alt="gallery-image"
-                />
-              </div>
-            ))}
-          </div>
+          {product?.images.length > 1 && (
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
+              {product?.images?.map(({ url }, index) => (
+                <div key={index}>
+                  <img
+                    onClick={() => setActive(url)}
+                    src={url}
+                    className="h-20 w-full sm:max-w-full cursor-pointer rounded-lg object-cover object-center"
+                    alt="gallery-image"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div className="col-span-full md:col-span-2">
@@ -59,7 +61,7 @@ export default function SingleProduct() {
           color="blue-gray"
           className="text-base md:text-xl font-bold mons"
         >
-          Apple AirPods with Charging Case
+          {product?.name}
         </Typography>
 
         <Typography
@@ -67,10 +69,7 @@ export default function SingleProduct() {
           color="blue-gray"
           className="text-base md:text-lg font-medium text-gray-700 mons mt-3"
         >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel unde
-          illum exercitationem ea praesentium, nostrum maxime voluptas, adipisci
-          perspiciatis, necessitatibus ab sit qui! Dolores ut alias veniam
-          vitae, repellendus maiores.
+          {product?.description}
         </Typography>
 
         <div className="bg-white shadow-md border-2 border-gray-200 mt-4 rounded-md">
@@ -83,13 +82,32 @@ export default function SingleProduct() {
               >
                 Price
               </Typography>
-              <Typography
-                placeholder={""}
-                color="blue-gray"
-                className="text-base font-medium mons"
-              >
-                $95.00
-              </Typography>
+              {product?.salePrice !== null ? (
+                <div className="flex items-center gap-3">
+                  <Typography
+                    placeholder={""}
+                    color="blue-gray"
+                    className="text-base font-medium mons line-through text-red-400"
+                  >
+                    Rs.{product?.price}
+                  </Typography>
+                  <Typography
+                    placeholder={""}
+                    color="blue-gray"
+                    className="text-base font-medium mons"
+                  >
+                    Rs.{product?.salePrice}
+                  </Typography>
+                </div>
+              ) : (
+                <Typography
+                  placeholder={""}
+                  color="blue-gray"
+                  className="text-base font-medium mons"
+                >
+                  Rs.{product?.price}
+                </Typography>
+              )}
             </div>
             <div>
               <Typography
@@ -104,10 +122,10 @@ export default function SingleProduct() {
                 color="blue-gray"
                 className="text-base font-medium mons"
               >
-                Electronics
+                {product?.category}
               </Typography>
             </div>
-            <div>
+            {/* <div>
               <Typography
                 placeholder={""}
                 color="blue-gray"
@@ -122,7 +140,7 @@ export default function SingleProduct() {
               >
                 Apple
               </Typography>
-            </div>
+            </div> */}
             <div>
               <Typography
                 placeholder={""}
@@ -131,24 +149,50 @@ export default function SingleProduct() {
               >
                 Stock
               </Typography>
-              <Typography
-                placeholder={""}
-                color="blue-gray"
-                className="text-base font-medium mons"
-              >
-                In Stock
-              </Typography>
+              {product?.stock > 0 ? (
+                <div className="px-3 py-1 bg-green-500 rounded-md w-fit">
+                  <Typography
+                    placeholder={""}
+                    color="blue-gray"
+                    className="text-base font-medium mons text-white"
+                  >
+                    In Stock
+                  </Typography>
+                </div>
+              ) : (
+                <div className="px-3 py-1 bg-red-500 rounded-md w-fit">
+                  <Typography
+                    placeholder={""}
+                    color="blue-gray"
+                    className="text-base font-medium mons text-white"
+                  >
+                    Out of Stock
+                  </Typography>
+                </div>
+              )}
             </div>
           </div>
           <div className="p-4 flex gap-4 items-center">
             {/* create quantity increase and decrease */}
-            <Button placeholder={""} size="sm" variant="text" ripple>
+            <Button
+              placeholder={""}
+              size="sm"
+              variant="text"
+              ripple
+              disabled={product?.stock === 0}
+            >
               <GoDash size={24} />
             </Button>
             <div className="bg-gray-200 w-12 h-10 flex items-center justify-center shadow-md">
               1
             </div>
-            <Button placeholder={""} size="sm" variant="text" ripple>
+            <Button
+              placeholder={""}
+              size="sm"
+              variant="text"
+              ripple
+              disabled={product?.stock === 0}
+            >
               <GoPlus size={24} />
             </Button>
           </div>
@@ -158,10 +202,16 @@ export default function SingleProduct() {
               variant="filled"
               className="bg-blue-400"
               ripple
+              disabled={product?.stock === 0}
             >
               Add to Cart
             </Button>
-            <Button placeholder={""} variant="outlined" ripple>
+            <Button
+              placeholder={""}
+              variant="outlined"
+              ripple
+              disabled={product?.stock === 0}
+            >
               Buy Now
             </Button>
           </div>

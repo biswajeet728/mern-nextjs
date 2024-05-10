@@ -11,14 +11,21 @@ import {
   Button,
 } from "@material-tailwind/react";
 import Link from "next/link";
+import { MainProduct } from "@/types";
 
-export default function ProductCard({ fromBrowse = false }) {
+export default function ProductCard({
+  fromBrowse = false,
+  product,
+}: {
+  fromBrowse?: boolean;
+  product: MainProduct;
+}) {
   return fromBrowse ? (
     <Card
       placeholder={""}
       className={"w-full md:w-[320px] border border-gray-200"}
     >
-      <Link className="w-full" href="/1">
+      <Link className="w-full" href={`/product/${product?.slug}`}>
         <CardHeader
           placeholder={""}
           shadow={false}
@@ -26,38 +33,41 @@ export default function ProductCard({ fromBrowse = false }) {
           className="h-56"
         >
           <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
+            src={product?.images[0]?.url || "https://via.placeholder.com/300"}
             alt="card-image"
             className="h-full w-full object-cover"
           />
         </CardHeader>
       </Link>
       <CardBody placeholder={""}>
-        <div className="mb-2 flex items-center justify-between">
+        <div className="mb-2 flex items-start justify-between">
           <Typography
             placeholder={""}
             color="blue-gray"
             className="font-medium mons"
           >
-            Apple AirPods
+            {product?.name?.length > 40
+              ? product?.name?.slice(0, 40) + "......"
+              : product?.name || "Product Name"}
           </Typography>
           <Typography
             placeholder={""}
             color="blue-gray"
             className="font-medium mons"
           >
-            $95.00
+            Rs. {product?.price || "$95.00"}
           </Typography>
         </div>
-        <Typography
+        {/* <Typography
           placeholder={""}
           variant="small"
           color="gray"
           className="font-normal opacity-75 mons"
         >
-          With plenty of talk and listen time, voice-activated Siri access, and
-          an available wireless charging case.
-        </Typography>
+          {product?.description?.length > 80
+            ? product?.description?.slice(0, 80) + "......"
+            : product?.description}
+        </Typography> */}
       </CardBody>
       <CardFooter placeholder={""} className="pt-0">
         <div>
@@ -85,7 +95,7 @@ export default function ProductCard({ fromBrowse = false }) {
           className="h-56"
         >
           <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
+            src={product?.images[0]?.url || "https://via.placeholder.com/300"}
             alt="card-image"
             className="h-full w-full object-cover"
           />
@@ -98,25 +108,28 @@ export default function ProductCard({ fromBrowse = false }) {
             color="blue-gray"
             className="font-medium mons"
           >
-            Apple AirPods
+            {product?.name?.length > 40
+              ? product?.name?.slice(0, 40) + "......"
+              : product?.name || "Product Name"}
           </Typography>
           <Typography
             placeholder={""}
             color="blue-gray"
             className="font-medium mons"
           >
-            $95.00
+            Rs.{product?.price || "$95.00"}
           </Typography>
         </div>
-        <Typography
+        {/* <Typography
           placeholder={""}
           variant="small"
           color="gray"
           className="font-normal opacity-75 mons"
         >
-          With plenty of talk and listen time, voice-activated Siri access, and
-          an available wireless charging case.
-        </Typography>
+          {product?.description?.length > 80
+            ? product?.description?.slice(0, 80) + "......"
+            : product?.description}
+        </Typography> */}
       </CardBody>
       <CardFooter placeholder={""} className="pt-0">
         <div>
