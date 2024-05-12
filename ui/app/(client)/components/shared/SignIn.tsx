@@ -1,5 +1,6 @@
 "use client";
 
+import { useWishlist } from "@/store/use-wishlist";
 import getGoogleOAuth from "@/utils/googleauth";
 import { SignInInput, signinSchema } from "@/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +29,7 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
   const router = useRouter();
   const params = useSearchParams();
   const redirectPath = params.get("redirect");
+  const wishlist = useWishlist();
 
   const {
     register: registerForm,

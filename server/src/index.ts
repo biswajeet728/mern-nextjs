@@ -8,6 +8,7 @@ import cloudinary from "cloudinary";
 // routes
 import authRoute from "@/routes/auth.route";
 import cartRoute from "@/routes/cart.route";
+import wishlistRoute from "@/routes/wishlist.route";
 
 // utils
 import { config } from "./utils/helper";
@@ -39,6 +40,7 @@ cloudinary.v2.config({
 // routes
 app.use("/api/auth", authRoute);
 app.use("/api/cart", cartRoute);
+app.use("/api/wishlist", wishlistRoute);
 
 // error handler
 app.use(errorMiddleware);

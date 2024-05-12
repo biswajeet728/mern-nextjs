@@ -21,15 +21,18 @@ import { ProductResponse, ProductType, Profile } from "@/types";
 import axios from "axios";
 import SearchResults from "./shared/SearchResults";
 import { useCartContext } from "../Providers/CartProvider";
+import { useWishlist } from "@/store/use-wishlist";
 
 function Header({ authStatus }: { authStatus: Profile | null }) {
-  const { items, handleRemove, user } = useCartContext();
+  const { items } = useCartContext();
   const [open, setOpen] = React.useState(false);
   const searchParams = useSearchParams();
   const openLogin = searchParams.get("login");
 
   const [queryText, setQueryText] = useState("");
   const [searchResults, setSearchResults] = useState<ProductType[]>([]);
+
+  const wishlist = useWishlist();
 
   useEffect(() => {
     if (openLogin) {
@@ -205,10 +208,14 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
                 >
                   <IconButton
                     placeholder={""}
-                    variant="filled"
+                    variant={wishlist.items.length > 0 ? "outlined" : "filled"}
                     className="px-6"
                   >
-                    <LuHeart size={18} />
+                    {wishlist.items.length > 0 ? (
+                      <LuHeart size={18} className="text-red-500" fill="red" />
+                    ) : (
+                      <LuHeart size={18} />
+                    )}
                   </IconButton>
                 </Link>
               )}

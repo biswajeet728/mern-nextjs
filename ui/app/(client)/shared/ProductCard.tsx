@@ -9,6 +9,7 @@ import {
   CardFooter,
   Typography,
   Button,
+  IconButton,
 } from "@material-tailwind/react";
 import Link from "next/link";
 import { MainProduct, Profile, ProfileType } from "@/types";
@@ -16,6 +17,9 @@ import { useCart } from "@/store/use-cart";
 import { useServerCart } from "@/store/use-server-cart";
 import axiosInstance from "@/lib/axios";
 import { AxiosError } from "axios";
+import { LuHeart } from "react-icons/lu";
+import { useWishlist } from "@/store/use-wishlist";
+import { useCartContext } from "../Providers/CartProvider";
 
 export default function ProductCard({
   fromBrowse = false,
@@ -26,6 +30,9 @@ export default function ProductCard({
 }) {
   const cart = useCart();
   const serverCart = useServerCart();
+  const wishlist = useWishlist();
+
+  const { user: authUser } = useCartContext();
 
   const handleCart = async (product: MainProduct) => {
     try {
@@ -52,6 +59,10 @@ export default function ProductCard({
     serverCart.addItem(product._id, quantity);
   };
 
+  const handleAddToWishlist = (product: MainProduct) => {
+    wishlist.addItem(product._id);
+  };
+
   return fromBrowse ? (
     <Card
       placeholder={""}
@@ -63,13 +74,28 @@ export default function ProductCard({
         floated={false}
         className="h-56"
       >
-        <Link href={`/product/${product?.slug}`} target="_blank">
-          <img
-            src={product?.images[0]?.url || "https://via.placeholder.com/300"}
-            alt="card-image"
-            className="h-full w-full object-cover"
-          />
-        </Link>
+        <div className="relative">
+          <Link href={`/product/${product?.slug}`} target="_blank">
+            <img
+              src={product?.images[0]?.url || "https://via.placeholder.com/300"}
+              alt="card-image"
+              className="h-full w-full object-cover"
+            />
+          </Link>
+
+          {authUser?.profile && (
+            <div className="absolute top-4 right-4">
+              <IconButton
+                placeholder={""}
+                variant="outlined"
+                className="rounded-full"
+                onClick={() => handleAddToWishlist(product)}
+              >
+                <LuHeart size={18} />
+              </IconButton>
+            </div>
+          )}
+        </div>
       </CardHeader>
       <CardBody placeholder={""}>
         <div className="mb-2 flex items-start justify-between">
@@ -120,20 +146,34 @@ export default function ProductCard({
       placeholder={""}
       className={"w-full md:w-[360px] border border-gray-200"}
     >
-      <Link className="w-full" href={`/product/${product?.slug}`}>
-        <CardHeader
-          placeholder={""}
-          shadow={false}
-          floated={false}
-          className="h-56"
-        >
-          <img
-            src={product?.images[0]?.url || "https://via.placeholder.com/300"}
-            alt="card-image"
-            className="h-full w-full object-cover"
-          />
-        </CardHeader>
-      </Link>
+      <CardHeader
+        placeholder={""}
+        shadow={false}
+        floated={false}
+        className="h-56"
+      >
+        <div className="relative">
+          <Link href={`/product/${product?.slug}`} target="_blank">
+            <img
+              src={product?.images[0]?.url || "https://via.placeholder.com/300"}
+              alt="card-image"
+              className="h-full w-full object-cover"
+            />
+          </Link>
+          {authUser?.profile && (
+            <div className="absolute top-4 right-4">
+              <IconButton
+                placeholder={""}
+                variant="outlined"
+                className="rounded-full"
+                onClick={() => handleAddToWishlist(product)}
+              >
+                <LuHeart size={18} />
+              </IconButton>
+            </div>
+          )}
+        </div>
+      </CardHeader>
       <CardBody placeholder={""}>
         <div className="mb-2 flex items-center justify-between">
           <Typography
