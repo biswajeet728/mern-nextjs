@@ -57,3 +57,22 @@ export interface CategoryType {
 export interface CategoryResponse {
   data: CategoryType[];
 }
+
+export interface CartId {
+  _id: string;
+  quantity: number;
+}
+
+export interface CartItem {
+  _id: string;
+  name: string;
+  price: number;
+  images: [
+    {
+      url: string;
+      public_id: string;
+    }
+  ];
+  category: string;
+  quantity: number;
+}

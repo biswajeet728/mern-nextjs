@@ -3,6 +3,7 @@ import CartTable from "./shared/CartTable";
 import Heading from "../shared/Heading";
 import SummeryTab from "./shared/SummeryTab";
 import { checkAuth } from "@/services/auth/checkAuth";
+import Container from "./Container";
 
 export default async function page() {
   const authStatus = await checkAuth();
@@ -11,8 +12,7 @@ export default async function page() {
       <div className="max-w-full md:max-w-screen-xl mx-auto mb-10 mt-20">
         <Heading children={`Your Cart`} />
         <aside className="flex flex-col md:flex-row gap-6 h-full md:h-[450px]">
-          <CartTable />
-          <SummeryTab />
+          <Container />
         </aside>
       </div>
     </div>

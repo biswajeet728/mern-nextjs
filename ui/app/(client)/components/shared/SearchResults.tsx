@@ -3,11 +3,21 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-function SearchResults({ searchResults }: { searchResults: ProductType[] }) {
+function SearchResults({
+  searchResults,
+  handleClose,
+}: {
+  searchResults: ProductType[];
+  handleClose: () => void;
+}) {
   return (
     <div className="!z-50 absolute top-10 left-0 bg-white w-full rounded-sm border border-gray-500 border-opacity-65 text-black p-2">
       {searchResults.map((product) => (
-        <Link href={`/product/${product.slug}`} key={product._id}>
+        <Link
+          href={`/product/${product.slug}`}
+          key={product._id}
+          onClick={handleClose}
+        >
           <div className="flex gap-2 p-2 hover:bg-gray-100">
             <div className="w-20 h-14 relative bg-gray-200 rounded-md border border-gray-300 border-opacity-60">
               <Image

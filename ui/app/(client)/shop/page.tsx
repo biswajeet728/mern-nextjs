@@ -11,7 +11,7 @@ export default async function page({
     page: number;
     isBestSelling: boolean | string;
     isFeatured: boolean | string;
-    // price: string;
+    price: string;
     q: string;
   };
 }) {
@@ -19,14 +19,14 @@ export default async function page({
     category: searchParams.cat,
     isBestSelling: searchParams.isBestSelling,
     isFeatured: searchParams.isFeatured,
-    // price: searchParams.price,
+    price: searchParams.price,
     page: searchParams.page || 1,
     q: searchParams.q,
   });
   return (
     <main className="w-full mons">
       <div className="p-4">
-        <div className="w-full flex flex-col md:flex-row gap-2 mt-20">
+        <div className="w-full flex flex-col md:flex-row gap-2 mt-44 md:mt-20">
           <FilterSideBar />
           <ProductView products={products.products} limit={products.limit} />
         </div>

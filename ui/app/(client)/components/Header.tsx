@@ -2,7 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Button, Navbar, Typography, Input } from "@material-tailwind/react";
+import {
+  Button,
+  Navbar,
+  Typography,
+  Input,
+  IconButton,
+  Badge,
+} from "@material-tailwind/react";
 import Link from "next/link";
 import Image from "next/image";
 import UserBox from "./UserBox";
@@ -13,8 +20,10 @@ import { useSearchParams } from "next/navigation";
 import { ProductResponse, ProductType, Profile } from "@/types";
 import axios from "axios";
 import SearchResults from "./shared/SearchResults";
+import { useCartContext } from "../Providers/CartProvider";
 
 function Header({ authStatus }: { authStatus: Profile | null }) {
+  const { items, handleRemove, user } = useCartContext();
   const [open, setOpen] = React.useState(false);
   const searchParams = useSearchParams();
   const openLogin = searchParams.get("login");
@@ -59,7 +68,10 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
     })();
   }, [queryText]);
 
-  // process.env.NEXT_PUBLIC_CATALOGUE_URL
+  const handleCloseSearchResults = () => {
+    setSearchResults([]); // Clear search results
+    setQueryText(""); // Clear query text
+  };
 
   return (
     <div>
@@ -132,7 +144,10 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
             />
 
             {searchResults.length > 0 && (
-              <SearchResults searchResults={searchResults} />
+              <SearchResults
+                searchResults={searchResults}
+                handleClose={handleCloseSearchResults}
+              />
             )}
           </div>
           <div>
@@ -159,9 +174,9 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
                 href="/wishlist"
                 className={`block md:hidden absolute bottom-[13px] right-20 md:right-12 md:relative md:top-[1px] lg:top-0right-0`}
               >
-                <Button placeholder={""} variant="filled" size="sm">
+                <IconButton placeholder={""} variant="filled" className="px-6">
                   <LuHeart size={18} />
-                </Button>
+                </IconButton>
               </Link>
             )}
 
@@ -169,9 +184,15 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
               href="/cart"
               className="block md:hidden absolute bottom-3 right-5 md:right-8 md:relative md:top-0 lg:top-0right-0"
             >
-              <Button placeholder={""} variant="outlined" size="sm">
-                <LuShoppingCart size={18} />
-              </Button>
+              <Badge content={items.length} className="px-[6px]">
+                <IconButton
+                  placeholder={""}
+                  variant="outlined"
+                  className="px-6"
+                >
+                  <LuShoppingCart size={18} />
+                </IconButton>
+              </Badge>
             </Link>
           </div>
 
@@ -182,9 +203,13 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
                   href="/wishlist"
                   className={`hidden md:block absolute top-5 right-36 md:right-12 md:relative md:top-[0px] lg:top-0right-0`}
                 >
-                  <Button placeholder={""} variant="filled" size="sm">
+                  <IconButton
+                    placeholder={""}
+                    variant="filled"
+                    className="px-6"
+                  >
                     <LuHeart size={18} />
-                  </Button>
+                  </IconButton>
                 </Link>
               )}
 
@@ -192,9 +217,15 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
                 href="/cart"
                 className="hidden md:block absolute top-5 right-20 md:right-8 md:relative md:top-0 lg:top-0right-0"
               >
-                <Button placeholder={""} variant="outlined" size="sm">
-                  <LuShoppingCart size={18} />
-                </Button>
+                <Badge content={items.length} className="px-[6px]">
+                  <IconButton
+                    placeholder={""}
+                    variant="outlined"
+                    className="px-6"
+                  >
+                    <LuShoppingCart size={18} />
+                  </IconButton>
+                </Badge>
               </Link>
               <div className="absolute top-3 right-4 md:relative md:top-0 md:top-0right-0">
                 {authStatus ? (

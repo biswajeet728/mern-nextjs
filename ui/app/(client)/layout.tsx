@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import "../globals.css";
 import Header from "./components/Header";
 import { checkAuth } from "@/services/auth/checkAuth";
+import { Suspense } from "react";
+import Spinner from "./components/Spinner";
 
 const montserrat = Montserrat({
   subsets: ["cyrillic-ext"],
@@ -28,7 +30,7 @@ export default async function HomeLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <Header authStatus={authStatus} />
-        {children}
+        <Suspense fallback={<Spinner />}>{children}</Suspense>
         <Footer />
       </body>
     </html>

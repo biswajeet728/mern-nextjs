@@ -25,9 +25,9 @@ export default function FilterBox({
   const searchParams = useSearchParams();
 
   // find max and min price from all products
-  // const maxPrice = React.useMemo(() => {
-  //   return Math.max(...products.map((product) => Number(product.price)));
-  // }, [products]);
+  const maxPrice = React.useMemo(() => {
+    return Math.max(...products.map((product) => Number(product.price)));
+  }, [products]);
 
   return (
     <div>
@@ -164,14 +164,14 @@ export default function FilterBox({
           </List>
         </Card>
       </div>
-      {/* <hr className="border-t border-blue-gray-100 my-2" />
+      <hr className="border-t border-blue-gray-100 my-2" />
       <div className="h-full bg-blue-gray-50 p-2">
         <div className="flex items-center gap-2">
           <h3 className="text-base font-semibold mons">Price</h3>
         </div>
         <div className="bg-white py-4 px-2 mt-2 shadow-md rounded-md">
           <div className="w-full md:!w-96">
-            <Slider
+            {/* <Slider
               placeholder={""}
               defaultValue={
                 searchParams.get("price")
@@ -187,6 +187,29 @@ export default function FilterBox({
               }}
               min={0}
               className="!w-full"
+              max={maxPrice}
+              style={{
+                width: "100%",
+              }}
+            /> */}
+            <input
+              type="range"
+              className="w-full"
+              defaultValue={
+                searchParams.get("price")
+                  ? Number(searchParams.get("price"))
+                  : 0
+              }
+              onChange={(e: any) => {
+                // if (searchParams.get("price")) {
+                //   router.push(`/shop`);
+                // } else {
+                //   router.push(`/shop?price=${Math.ceil(e.target.value)}`);
+                // }
+                router.push(`/shop?price=${Math.ceil(e.target.value)}`);
+              }}
+              min={0}
+              max={maxPrice}
             />
 
             <div className="w-full mt-2 flex items-center justify-between">
@@ -199,7 +222,7 @@ export default function FilterBox({
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
       <div className="flex justify-start mt-3">
         <Button
@@ -216,6 +239,7 @@ export default function FilterBox({
             searchParams.get("isBestSelling") === null &&
             searchParams.get("isFeatured") === null &&
             searchParams.get("page") === null &&
+            searchParams.get("price") === null &&
             searchParams.get("q") === null
           }
         >

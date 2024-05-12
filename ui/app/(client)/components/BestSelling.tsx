@@ -3,7 +3,7 @@ import Heading from "../shared/Heading";
 import ProductCard from "../shared/ProductCard";
 import { MainProduct } from "@/types";
 
-function BestSelling({ products }: { products: MainProduct[] }) {
+async function BestSelling({ products }: { products: MainProduct[] }) {
   return (
     <div className="px-4 pb-4">
       <Heading children="Best Selling" />

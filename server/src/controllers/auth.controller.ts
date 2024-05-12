@@ -91,7 +91,7 @@ export const signIn: RequestHandler = TryCatch(async (req, res, next) => {
   if (!isMatched) return next(new ErrorHandler("Invalid credentials", 400));
 
   const accessToken = jwt.sign({ id: user._id }, config.JWT_SECRET, {
-    expiresIn: "5m",
+    expiresIn: "15m",
   });
 
   const refreshToken = jwt.sign({ id: user._id }, config.JWT_SECRET);

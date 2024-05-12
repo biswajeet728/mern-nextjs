@@ -1,10 +1,19 @@
 "use client";
 
+import { useCart } from "@/store/use-cart";
+import { CartItem, Profile } from "@/types";
 import { Button } from "@material-tailwind/react";
+import { useRouter } from "next/router";
 import React from "react";
 import { GoX } from "react-icons/go";
 
-export default function ActionBox() {
+export default function ActionBox({
+  item,
+  handleRemove,
+}: {
+  item: CartItem;
+  handleRemove: (id: string) => void;
+}) {
   return (
     <div>
       <Button
@@ -14,6 +23,7 @@ export default function ActionBox() {
         variant="outlined"
         ripple
         className="hidden md:flex items-center gap-1 shadow-none rounded-full mons"
+        onClick={() => handleRemove(item._id)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -38,6 +48,7 @@ export default function ActionBox() {
         variant="outlined"
         ripple
         className="block md:hidden"
+        onClick={() => handleRemove(item._id)}
       >
         <GoX size={20} />
       </Button>

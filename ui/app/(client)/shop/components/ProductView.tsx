@@ -4,7 +4,7 @@ import ProductCard from "../../shared/ProductCard";
 import { MainProduct } from "@/types";
 import Pagination from "../shared/Pagination";
 
-export default async function ProductView({
+export default function ProductView({
   products,
   limit,
 }: {

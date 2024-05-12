@@ -15,10 +15,11 @@ import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axios";
 import { Profile } from "@/types";
 
-import { MdSpaceDashboard } from "react-icons/md";
+import { useCartContext } from "../Providers/CartProvider";
 
 export default function UserBox({ user }: { user: Profile | null }) {
   const router = useRouter();
+  const { setItems } = useCartContext();
 
   const handleSignInSubmit = async () => {
     try {
@@ -32,6 +33,7 @@ export default function UserBox({ user }: { user: Profile | null }) {
 
       if (res.data.success) {
         router.push("/");
+        setItems([]);
         router.refresh();
       }
     } catch (error) {

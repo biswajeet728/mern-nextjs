@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "./(client)/Providers/ToastProvider";
+import { CartProvider } from "./(client)/Providers/CartProvider";
+import { checkAuth } from "@/services/auth/checkAuth";
 
 const montserrat = Montserrat({
   subsets: ["cyrillic-ext"],
@@ -14,16 +16,17 @@ export const metadata: Metadata = {
   description: "SazzyStore: The best place to buy your favorite products.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await checkAuth();
   return (
     <html lang="en">
       <body className={montserrat.className}>
         {/* <StoreProvider>{children}</StoreProvider> */}
-        {children}
+        <CartProvider user={user}>{children}</CartProvider>
         <ToastProvider />
         {/* {children} */}
       </body>
