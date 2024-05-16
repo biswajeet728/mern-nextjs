@@ -15,11 +15,11 @@ import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axios";
 import { Profile } from "@/types";
 
-import { useCartContext } from "../Providers/CartProvider";
+import { useGlobalStoreContext } from "../Providers/GlobalStoreProvider";
 
 export default function UserBox({ user }: { user: Profile | null }) {
   const router = useRouter();
-  const { setItems } = useCartContext();
+  const { setItems } = useGlobalStoreContext();
 
   const handleSignInSubmit = async () => {
     try {

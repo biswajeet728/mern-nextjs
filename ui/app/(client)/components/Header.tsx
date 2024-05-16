@@ -20,27 +20,25 @@ import { useSearchParams } from "next/navigation";
 import { ProductResponse, ProductType, Profile } from "@/types";
 import axios from "axios";
 import SearchResults from "./shared/SearchResults";
-import { useCartContext } from "../Providers/CartProvider";
 import { useWishlist } from "@/store/use-wishlist";
+import { useGlobalStoreContext } from "../Providers/GlobalStoreProvider";
 
 function Header({ authStatus }: { authStatus: Profile | null }) {
-  const { items } = useCartContext();
-  const [open, setOpen] = React.useState(false);
+  const { items, wishlist, openAuthModal, setOpenAuthModal } =
+    useGlobalStoreContext();
   const searchParams = useSearchParams();
   const openLogin = searchParams.get("login");
 
   const [queryText, setQueryText] = useState("");
   const [searchResults, setSearchResults] = useState<ProductType[]>([]);
 
-  const wishlist = useWishlist();
-
   useEffect(() => {
     if (openLogin) {
-      setOpen(true);
+      setOpenAuthModal(true);
     }
 
     return () => {
-      setOpen(false);
+      setOpenAuthModal(false);
     };
   }, []);
 
@@ -177,8 +175,16 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
                 href="/wishlist"
                 className={`block md:hidden absolute bottom-[13px] right-20 md:right-12 md:relative md:top-[1px] lg:top-0right-0`}
               >
-                <IconButton placeholder={""} variant="filled" className="px-6">
-                  <LuHeart size={18} />
+                <IconButton
+                  placeholder={""}
+                  variant={wishlist.length > 0 ? "outlined" : "filled"}
+                  className="px-6"
+                >
+                  {wishlist.length > 0 ? (
+                    <LuHeart size={18} className="text-red-500" fill="red" />
+                  ) : (
+                    <LuHeart size={18} />
+                  )}
                 </IconButton>
               </Link>
             )}
@@ -208,10 +214,10 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
                 >
                   <IconButton
                     placeholder={""}
-                    variant={wishlist.items.length > 0 ? "outlined" : "filled"}
+                    variant={wishlist.length > 0 ? "outlined" : "filled"}
                     className="px-6"
                   >
-                    {wishlist.items.length > 0 ? (
+                    {wishlist.length > 0 ? (
                       <LuHeart size={18} className="text-red-500" fill="red" />
                     ) : (
                       <LuHeart size={18} />
@@ -245,7 +251,7 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
                     className="mons capitalize md:py-[11px]"
                     onClick={(e) => {
                       e.preventDefault();
-                      setOpen(!open);
+                      setOpenAuthModal(!openAuthModal);
                     }}
                   >
                     Login / Register
@@ -257,7 +263,7 @@ function Header({ authStatus }: { authStatus: Profile | null }) {
         </div>
       </Navbar>
 
-      <AuthModal open={open} setOpen={setOpen} />
+      <AuthModal open={openAuthModal} setOpen={setOpenAuthModal} />
     </div>
   );
 }

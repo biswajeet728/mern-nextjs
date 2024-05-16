@@ -5,7 +5,7 @@ import React from "react";
 import { GoDash, GoPlus } from "react-icons/go";
 import { useCart } from "@/store/use-cart";
 import { CartItem, Profile } from "@/types";
-import { useCartContext } from "../../Providers/CartProvider";
+import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
 
 export default function QuantityBox({
   item,
@@ -14,7 +14,7 @@ export default function QuantityBox({
   item: CartItem;
   user: Profile | null;
 }) {
-  const { handleUpdate } = useCartContext();
+  const { handleUpdate } = useGlobalStoreContext();
 
   return (
     <div className="flex items-center gap-3">

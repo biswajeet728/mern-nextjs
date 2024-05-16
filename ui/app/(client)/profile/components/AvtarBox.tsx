@@ -6,7 +6,7 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 
 export default function AvtarBox() {
   return (
-    <div className="h-32 w-36 relative">
+    <div className="h-28 w-32 relative">
       <Image
         alt="img"
         src={"/images/user.png"}

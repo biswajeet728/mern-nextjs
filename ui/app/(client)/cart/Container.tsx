@@ -3,15 +3,15 @@
 import React from "react";
 import CartTable from "./shared/CartTable";
 import SummeryTab from "./shared/SummeryTab";
-import { useCartContext } from "../Providers/CartProvider";
+import { useGlobalStoreContext } from "../Providers/GlobalStoreProvider";
 
 function Container() {
-  const { items, handleRemove, user } = useCartContext();
+  const { items, handleRemove, user } = useGlobalStoreContext();
 
   return (
     <>
       <CartTable user={user} items={items} handleRemove={handleRemove} />
-      <SummeryTab user={user} items={items} />
+      <SummeryTab />
     </>
   );
 }

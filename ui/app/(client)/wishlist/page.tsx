@@ -12,7 +12,7 @@ async function page() {
   }
 
   return (
-    <div className="p-4 max-w-[1400px] mx-auto">
+    <div className="p-4 max-w-[1400px] mx-auto h-dvh">
       <div className="max-w-full mt-36 md:mt-20">
         <Heading children={`Your Wishlist`} />
         <aside className="flex flex-wrap gap-6">

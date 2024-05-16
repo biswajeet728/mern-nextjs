@@ -1,8 +1,10 @@
 "use client";
 
 import { addMultipleItems, getProductCarts } from "@/services/cart";
+import { WishlistItem } from "@/services/wishlist";
 import { useCart } from "@/store/use-cart";
 import { useServerCart } from "@/store/use-server-cart";
+import { useWishlist } from "@/store/use-wishlist";
 import { CartItem, Profile } from "@/types";
 import React, {
   createContext,
@@ -31,18 +33,24 @@ interface CartContextType {
   serverCart: ServerCart;
   handleRemove: (id: string) => void;
   handleUpdate: (type: string, id: string) => void;
+  wishlist: WishlistItem[];
+  totalAmount: number;
+  openAuthModal: boolean;
+  setOpenAuthModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const GloblStoreContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{
   children: React.ReactNode;
   user: Profile | null;
 }> = ({ children, user }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
 
   const cart = useCart(); // Assuming this function is defined somewhere
   const serverCart = useServerCart(); // Assuming this function is defined somewhere
+  const wishlist = useWishlist(); // Assuming this function is defined somewhere
 
   const ids = useMemo(
     () =>
@@ -61,6 +69,7 @@ export const CartProvider: React.FC<{
           cart.removeAllItems();
         });
       }
+      wishlist.getWishlistItems();
     }
   }, [user, cart.items]);
 
@@ -103,6 +112,10 @@ export const CartProvider: React.FC<{
     }
   };
 
+  const calculateTotalAmount = () => {
+    return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  };
+
   const contextValue: CartContextType = {
     items,
     setItems,
@@ -110,17 +123,23 @@ export const CartProvider: React.FC<{
     serverCart,
     handleRemove,
     handleUpdate,
+    wishlist: wishlist.items,
+    totalAmount: calculateTotalAmount(),
+    openAuthModal,
+    setOpenAuthModal,
   };
 
   return (
-    <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
+    <GloblStoreContext.Provider value={contextValue}>
+      {children}
+    </GloblStoreContext.Provider>
   );
 };
 
-export const useCartContext = (): CartContextType => {
-  const context = useContext(CartContext);
+export const useGlobalStoreContext = (): CartContextType => {
+  const context = useContext(GloblStoreContext);
   if (context === undefined) {
-    throw new Error("useCartContext must be used within a CartProvider");
+    throw new Error("useGlobalStoreContext must be used within a CartProvider");
   }
   return context;
 };

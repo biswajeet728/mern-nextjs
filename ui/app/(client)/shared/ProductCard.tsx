@@ -19,7 +19,7 @@ import axiosInstance from "@/lib/axios";
 import { AxiosError } from "axios";
 import { LuHeart } from "react-icons/lu";
 import { useWishlist } from "@/store/use-wishlist";
-import { useCartContext } from "../Providers/CartProvider";
+import { useGlobalStoreContext } from "../Providers/GlobalStoreProvider";
 
 export default function ProductCard({
   fromBrowse = false,
@@ -32,7 +32,7 @@ export default function ProductCard({
   const serverCart = useServerCart();
   const wishlist = useWishlist();
 
-  const { user: authUser } = useCartContext();
+  const { user: authUser } = useGlobalStoreContext();
 
   const handleCart = async (product: MainProduct) => {
     try {

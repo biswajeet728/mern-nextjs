@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "./(client)/Providers/ToastProvider";
-import { CartProvider } from "./(client)/Providers/CartProvider";
+import { CartProvider } from "./(client)/Providers/GlobalStoreProvider";
 import { checkAuth } from "@/services/auth/checkAuth";
 
 const montserrat = Montserrat({

@@ -1,20 +1,18 @@
 "use client";
 
-import { CartItem, Profile } from "@/types";
 import { Button, Input } from "@material-tailwind/react";
 import Link from "next/link";
 import React from "react";
+import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
 
-export default function SummeryTab({
-  user,
-  items,
-}: {
-  user: Profile | null;
-  items: CartItem[];
-}) {
-  const total = React.useMemo(() => {
-    return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  }, [items]);
+export default function SummeryTab({}: {}) {
+  const {
+    totalAmount: total,
+    items,
+    user,
+    setOpenAuthModal,
+    openAuthModal,
+  } = useGlobalStoreContext();
   return (
     <div className="flex-[0.55]">
       <div className="w-full mb-3">
@@ -69,14 +67,25 @@ export default function SummeryTab({
         </div>
 
         <div className="flex items-center justify-end">
-          <Button
-            placeholder={""}
-            className="mt-10"
-            variant="gradient"
-            disabled={items.length === 0}
-          >
-            <Link href="/checkout">Proceed to Checkout</Link>
-          </Button>
+          {user ? (
+            <Button
+              placeholder={""}
+              className="mt-10"
+              variant="gradient"
+              disabled={items.length === 0}
+            >
+              <Link href="/checkout">Proceed to Checkout</Link>
+            </Button>
+          ) : (
+            <Button
+              placeholder={""}
+              className="mt-10"
+              variant="gradient"
+              onClick={() => setOpenAuthModal(!openAuthModal)}
+            >
+              Login To Checkout
+            </Button>
+          )}
         </div>
       </div>
     </div>

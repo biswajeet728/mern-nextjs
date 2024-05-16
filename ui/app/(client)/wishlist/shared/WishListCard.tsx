@@ -1,6 +1,8 @@
 "use client";
 
 import { WishlistItem } from "@/services/wishlist";
+import { useServerCart } from "@/store/use-server-cart";
+import { useWishlist } from "@/store/use-wishlist";
 import {
   Card,
   CardHeader,
@@ -17,6 +19,8 @@ function WishListCard({
   item: WishlistItem;
   handleRemove: (productId: string) => void;
 }) {
+  const serverCart = useServerCart();
+  const wishlist = useWishlist();
   return (
     <div>
       <Card
@@ -54,7 +58,15 @@ function WishListCard({
         </CardBody>
         <CardFooter placeholder={""} className="pt-0">
           <div className="flex items-center gap-3">
-            <Button placeholder={""}>Add To Cart</Button>
+            <Button
+              placeholder={""}
+              onClick={() => {
+                serverCart.addItem(item._id, 1);
+                wishlist.removeWishlistItem(item._id);
+              }}
+            >
+              Add To Cart
+            </Button>
             <Button
               placeholder={""}
               variant="outlined"

@@ -8,14 +8,14 @@ import { AxiosError } from "axios";
 import { toast } from "sonner"; // Assuming this is correct
 import { create } from "zustand";
 
-export interface CartState {
+export interface WishlistState {
   items: WishlistItem[];
   addItem: (productId: string) => Promise<void>; // Change return type to Promise<void>
   getWishlistItems: () => Promise<void>; // Add this function
   removeWishlistItem: (productId: string) => Promise<void>; // Add this function
 }
 
-export const useWishlist = create<CartState>((set, get) => ({
+export const useWishlist = create<WishlistState>((set, get) => ({
   items: [],
   addItem: async (productId: string) => {
     try {
@@ -57,6 +57,7 @@ export const useWishlist = create<CartState>((set, get) => ({
         set((state) => ({
           items: state.items.filter((item) => item._id !== productId), // Remove the item from the state
         })); // Update the state
+        toast.success("Item removed from wishlist"); // Provide a success message
         return; // Return void
       }
       return; // Return void
