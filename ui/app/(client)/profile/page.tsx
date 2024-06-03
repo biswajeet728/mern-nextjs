@@ -1,9 +1,9 @@
 import React from "react";
-import AvtarBox from "./components/AvtarBox";
 import UpdateProfileForm from "./components/UpdateProfileForm";
 import { checkAuth } from "@/services/auth/checkAuth";
 import { redirect } from "next/navigation";
 import Address from "./components/Address";
+import UpdateProfilePic from "./components/UpdateProfilePic";
 
 export default async function page() {
   const user = await checkAuth();
@@ -19,10 +19,10 @@ export default async function page() {
           <div className="h-full border border-black border-opacity-15 rounded-md p-4">
             <div className="flex flex-col md:flex-row gap-4 h-full">
               <div className="flex-1">
-                <AvtarBox />
+                <UpdateProfilePic />
 
                 <div className="w-full my-4">
-                  <UpdateProfileForm />
+                  <UpdateProfileForm user={user} />
                 </div>
               </div>
               <div className="border-l border-black border-opacity-15 h-full ml-3"></div>

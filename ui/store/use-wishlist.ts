@@ -13,6 +13,7 @@ export interface WishlistState {
   addItem: (productId: string) => Promise<void>; // Change return type to Promise<void>
   getWishlistItems: () => Promise<void>; // Add this function
   removeWishlistItem: (productId: string) => Promise<void>; // Add this function
+  epmtyWishlist: () => void; // Add this function
 }
 
 export const useWishlist = create<WishlistState>((set, get) => ({
@@ -68,5 +69,8 @@ export const useWishlist = create<WishlistState>((set, get) => ({
         toast.error("An error occurred");
       }
     }
+  },
+  epmtyWishlist: () => {
+    set({ items: [] }); // Empty the wishlist
   },
 }));

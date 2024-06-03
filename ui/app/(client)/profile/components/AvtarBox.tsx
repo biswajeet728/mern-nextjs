@@ -1,25 +1,32 @@
 "use client";
 
+import { Profile } from "@/types";
 import Image from "next/image";
 import React from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
 
-export default function AvtarBox() {
+export default function AvtarBox({
+  setPic,
+}: {
+  setPic: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  const { userProfilePic } = useGlobalStoreContext();
   return (
-    <div className="h-28 w-32 relative">
+    <div className="h-28 w-28 relative rounded-full">
       <Image
         alt="img"
-        src={"/images/user.png"}
+        src={userProfilePic}
         fill
-        objectFit="contain"
-        className="absolute inset-0 w-full h-full"
+        objectFit="cover"
+        className="absolute inset-0 w-full h-full rounded-full"
       />
 
       <div
         className="
         absolute
-        bottom-0
-        right-2
+        -bottom-1
+        -right-2
         p-1
         rounded-full
         cursor-pointer
@@ -29,7 +36,13 @@ export default function AvtarBox() {
           type="file"
           id="img-file"
           className="hidden"
-          onChange={(e) => console.log(e.target.files)}
+          name="files"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setPic(URL.createObjectURL(file));
+            }
+          }}
         />
         <label
           htmlFor="img-file"
@@ -39,13 +52,13 @@ export default function AvtarBox() {
             justify-center
             bg-black
             p-1
-            w-8
-            h-8
+            w-9
+            h-9
             cursor-pointer
             rounded-full
         "
         >
-          <IoCloudUploadOutline className="text-white" size="1.2rem" />
+          <IoCloudUploadOutline className="text-white" size="1.1rem" />
         </label>
       </div>
       {/* <IoCloudUploadOutline

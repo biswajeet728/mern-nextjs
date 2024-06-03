@@ -6,6 +6,7 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
+  phone?: string;
   role: string;
   avatar?: { url: string; public_id: string };
   tokens: string[];
@@ -13,6 +14,7 @@ export interface IUser extends Document {
   isSocialLogin: boolean;
   verified: boolean;
   googleId: string;
+  googlePicture?: string;
   createdAt: string;
   updatedAt: string;
 }

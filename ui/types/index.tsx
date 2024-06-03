@@ -9,6 +9,7 @@ export interface ProfileType {
   email: string;
   role: string;
   verified: boolean;
+  phone?: string;
   avatar?: {
     url: string;
   };
@@ -75,4 +76,8 @@ export interface CartItem {
   ];
   category: string;
   quantity: number;
+}
+
+export interface UpdateProfileResponse extends DefaultResponse {
+  pic_url?: string;
 }

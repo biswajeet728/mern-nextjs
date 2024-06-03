@@ -16,10 +16,12 @@ import axiosInstance from "@/lib/axios";
 import { Profile } from "@/types";
 
 import { useGlobalStoreContext } from "../Providers/GlobalStoreProvider";
+import { useWishlist } from "@/store/use-wishlist";
 
 export default function UserBox({ user }: { user: Profile | null }) {
   const router = useRouter();
-  const { setItems } = useGlobalStoreContext();
+  const { setItems, userProfilePic } = useGlobalStoreContext();
+  const wishlist = useWishlist();
 
   const handleSignInSubmit = async () => {
     try {
@@ -34,6 +36,7 @@ export default function UserBox({ user }: { user: Profile | null }) {
       if (res.data.success) {
         router.push("/");
         setItems([]);
+        wishlist.epmtyWishlist();
         router.refresh();
       }
     } catch (error) {
@@ -49,11 +52,7 @@ export default function UserBox({ user }: { user: Profile | null }) {
           alt="tania andrew"
           className="cursor-pointer"
           size="md"
-          src={
-            user?.profile.avatar
-              ? user?.profile.avatar?.url
-              : `https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80`
-          }
+          src={userProfilePic}
         />
       </MenuHandler>
       {user && (

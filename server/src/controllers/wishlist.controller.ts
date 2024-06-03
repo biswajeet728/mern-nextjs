@@ -55,7 +55,7 @@ export const getWishlist: RequestHandler = TryCatch(
     const wishlist = await Wishlist.findOne({ user: req.user.id });
 
     if (!wishlist) {
-      return next(new ErrorHandler("Wishlist not found", 404));
+      return res.json({ success: false, items: [] });
     }
 
     // extract the product data from the product modal

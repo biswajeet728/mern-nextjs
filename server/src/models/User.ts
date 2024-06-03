@@ -19,6 +19,10 @@ const UserSchema = new Schema<IUser, {}, Methods>({
   password: {
     type: String,
   },
+  phone: {
+    type: String,
+    default: null,
+  },
   role: {
     type: String,
     enum: ["user", "admin"],
@@ -43,6 +47,10 @@ const UserSchema = new Schema<IUser, {}, Methods>({
     default: false,
   },
   googleId: {
+    type: String,
+    default: null,
+  },
+  googlePicture: {
     type: String,
     default: null,
   },

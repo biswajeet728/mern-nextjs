@@ -1,11 +1,13 @@
 "use client";
 
+import { checkAuth } from "@/services/auth/checkAuth";
 import { addMultipleItems, getProductCarts } from "@/services/cart";
 import { WishlistItem } from "@/services/wishlist";
 import { useCart } from "@/store/use-cart";
 import { useServerCart } from "@/store/use-server-cart";
 import { useWishlist } from "@/store/use-wishlist";
-import { CartItem, Profile } from "@/types";
+import { CartItem, Profile, UpdateProfileResponse } from "@/types";
+import axios, { AxiosError } from "axios";
 import React, {
   createContext,
   useContext,
@@ -13,6 +15,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
+import { toast } from "sonner";
 
 interface ServerCartItem {
   productId: string;
@@ -37,6 +40,11 @@ interface CartContextType {
   totalAmount: number;
   openAuthModal: boolean;
   setOpenAuthModal: React.Dispatch<React.SetStateAction<boolean>>;
+  userProfilePic: string;
+  setUserProfilePic: React.Dispatch<React.SetStateAction<string>>;
+  updateProfilePicture(data: FormData): Promise<void>;
+  pic: string;
+  setPic: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const GloblStoreContext = createContext<CartContextType | undefined>(undefined);
@@ -51,6 +59,11 @@ export const CartProvider: React.FC<{
   const cart = useCart(); // Assuming this function is defined somewhere
   const serverCart = useServerCart(); // Assuming this function is defined somewhere
   const wishlist = useWishlist(); // Assuming this function is defined somewhere
+
+  const [userProfilePic, setUserProfilePic] = useState<string>(
+    user?.profile.avatar?.url || "/images/user.png"
+  );
+  const [pic, setPic] = React.useState<string>("");
 
   const ids = useMemo(
     () =>
@@ -70,6 +83,8 @@ export const CartProvider: React.FC<{
         });
       }
       wishlist.getWishlistItems();
+    } else {
+      wishlist.epmtyWishlist();
     }
   }, [user, cart.items]);
 
@@ -116,6 +131,29 @@ export const CartProvider: React.FC<{
     return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   };
 
+  async function updateProfilePicture(data: FormData) {
+    try {
+      const res = await axios.post<UpdateProfileResponse>(
+        `${process.env.NEXT_PUBLIC_API_URL}profile/update-pic`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        setUserProfilePic(res.data.pic_url!);
+        toast.success(res.data.message);
+        setPic("");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        toast.error(error.response?.data.message);
+      }
+    }
+  }
+
   const contextValue: CartContextType = {
     items,
     setItems,
@@ -127,6 +165,11 @@ export const CartProvider: React.FC<{
     totalAmount: calculateTotalAmount(),
     openAuthModal,
     setOpenAuthModal,
+    userProfilePic,
+    setUserProfilePic,
+    updateProfilePicture,
+    pic,
+    setPic,
   };
 
   return (

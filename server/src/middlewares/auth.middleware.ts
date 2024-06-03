@@ -33,14 +33,10 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
 
     const payload = jwt.verify(token, config.JWT_SECRET) as { id: string };
 
-    console.log(payload, "payload");
-
     if (!payload) return next(new ErrorHandler("Unauthorized", 401));
 
     const user = await User.findById(payload.id);
     if (!user) return next(new ErrorHandler("Unauthorized Request |", 403));
-
-    console.log(user, "user");
 
     req.user = {
       id: user._id,
