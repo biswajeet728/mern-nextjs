@@ -1,6 +1,6 @@
 "use client";
 
-import { updateProfileData } from "@/actions/update.profile";
+import { updateProfileData } from "@/lib/server.actions";
 import { Profile } from "@/types";
 import { Button, Input, Textarea } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";

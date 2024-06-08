@@ -10,7 +10,7 @@ import {
 } from "@material-tailwind/react";
 import React, { useTransition } from "react";
 import { useGlobalStoreContext } from "../Providers/GlobalStoreProvider";
-import { addAddress, updateAddress } from "@/actions/update.profile";
+import { addAddress, updateAddress } from "@/lib/server.actions";
 import { toast } from "sonner";
 import { AddressItem } from "@/services/profile";
 import { useRouter } from "next/navigation";

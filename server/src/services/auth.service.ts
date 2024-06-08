@@ -10,12 +10,6 @@ export async function getGoogleAccessTokens({
 }): Promise<GoogleTokensResult> {
   const url = `https://oauth2.googleapis.com/token`;
 
-  console.log(
-    config.GOOGLE_CLIENT_ID,
-    config.GOOGLE_CLIENT_SECRET,
-    config.GOOGLE_CALLBACK_URL
-  );
-
   const values = {
     code,
     client_id: config.GOOGLE_CLIENT_ID,
