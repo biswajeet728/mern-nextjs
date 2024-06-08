@@ -8,6 +8,7 @@ interface IUserPayload {
   id: string;
   username: string;
   email: string;
+  phone?: string;
   role: string;
   verified: boolean;
   avatar?: object;
@@ -42,6 +43,7 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
       id: user._id,
       username: user.username,
       email: user.email,
+      phone: user.phone,
       role: user.role,
       verified: user.verified,
       avatar: user.avatar,

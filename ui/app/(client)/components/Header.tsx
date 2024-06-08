@@ -23,9 +23,14 @@ import SearchResults from "./shared/SearchResults";
 import { useWishlist } from "@/store/use-wishlist";
 import { useGlobalStoreContext } from "../Providers/GlobalStoreProvider";
 
-function Header({ authStatus }: { authStatus: Profile | null }) {
-  const { items, wishlist, openAuthModal, setOpenAuthModal } =
-    useGlobalStoreContext();
+function Header() {
+  const {
+    items,
+    wishlist,
+    openAuthModal,
+    setOpenAuthModal,
+    user: authStatus,
+  } = useGlobalStoreContext();
   const searchParams = useSearchParams();
   const openLogin = searchParams.get("login");
 

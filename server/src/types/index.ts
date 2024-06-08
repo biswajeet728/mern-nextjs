@@ -91,3 +91,20 @@ export interface IProduct extends Document {
 export type Image = {
   file: File;
 };
+
+export interface IAddress extends Document {
+  user: Schema.Types.ObjectId;
+  items: [
+    {
+      fullName: string;
+      address: string;
+      city: string;
+      state: string;
+      country: string;
+      zipCode: number;
+      landmark?: string;
+      phone: number;
+      isDefault: boolean;
+    }
+  ];
+}

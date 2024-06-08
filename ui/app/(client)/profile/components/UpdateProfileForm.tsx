@@ -3,16 +3,19 @@
 import { updateProfileData } from "@/actions/update.profile";
 import { Profile } from "@/types";
 import { Button, Input, Textarea } from "@material-tailwind/react";
+import { useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 import { toast } from "sonner";
 
 export default function UpdateProfileForm({ user }: { user: Profile | null }) {
   let [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const submitData = (data: FormData) => {
     startTransition(async () => {
       const res = await updateProfileData(data);
       if (res?.success) {
+        router.refresh();
         toast.success(res.message || "Updated !");
       }
     });

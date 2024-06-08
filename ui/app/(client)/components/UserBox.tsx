@@ -43,17 +43,20 @@ export default function UserBox({ user }: { user: Profile | null }) {
       console.log("An error occurred: ", error);
     }
   };
+
   return (
     <Menu>
       <MenuHandler>
-        <Avatar
-          placeholder={""}
-          variant="circular"
-          alt="tania andrew"
-          className="cursor-pointer"
-          size="md"
-          src={userProfilePic}
-        />
+        {user && (
+          <Avatar
+            placeholder={""}
+            variant="circular"
+            alt="tania andrew"
+            className="cursor-pointer"
+            size="md"
+            src={userProfilePic}
+          />
+        )}
       </MenuHandler>
       {user && (
         <MenuList placeholder={""} className="-ml-4 md:-ml-8">

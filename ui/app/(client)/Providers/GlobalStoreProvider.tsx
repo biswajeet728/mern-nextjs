@@ -2,11 +2,18 @@
 
 import { checkAuth } from "@/services/auth/checkAuth";
 import { addMultipleItems, getProductCarts } from "@/services/cart";
+import { AddressItem } from "@/services/profile";
 import { WishlistItem } from "@/services/wishlist";
 import { useCart } from "@/store/use-cart";
 import { useServerCart } from "@/store/use-server-cart";
 import { useWishlist } from "@/store/use-wishlist";
-import { CartItem, Profile, UpdateProfileResponse } from "@/types";
+import {
+  CartItem,
+  DefaultResponse,
+  Profile,
+  SingleAddress,
+  UpdateProfileResponse,
+} from "@/types";
 import axios, { AxiosError } from "axios";
 import React, {
   createContext,
@@ -42,9 +49,20 @@ interface CartContextType {
   setOpenAuthModal: React.Dispatch<React.SetStateAction<boolean>>;
   userProfilePic: string;
   setUserProfilePic: React.Dispatch<React.SetStateAction<string>>;
-  updateProfilePicture(data: FormData): Promise<void>;
+  updateProfilePicture(data: FormData): Promise<UpdateProfileResponse>;
   pic: string;
   setPic: React.Dispatch<React.SetStateAction<string>>;
+  getOneAddress(id: string): Promise<SingleAddress | undefined>;
+  deleteAddress(id: string): Promise<{
+    message: string;
+    success: boolean;
+    id: string;
+  }>;
+  updateDefaultAddress(id: string): Promise<DefaultResponse>;
+  selectedAddress: AddressItem | undefined;
+  setSelectedAddress: React.Dispatch<
+    React.SetStateAction<AddressItem | undefined>
+  >;
 }
 
 const GloblStoreContext = createContext<CartContextType | undefined>(undefined);
@@ -64,6 +82,7 @@ export const CartProvider: React.FC<{
     user?.profile.avatar?.url || "/images/user.png"
   );
   const [pic, setPic] = React.useState<string>("");
+  const [selectedAddress, setSelectedAddress] = React.useState<AddressItem>();
 
   const ids = useMemo(
     () =>
@@ -133,19 +152,73 @@ export const CartProvider: React.FC<{
 
   async function updateProfilePicture(data: FormData) {
     try {
-      const res = await axios.post<UpdateProfileResponse>(
+      const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}profile/update-pic`,
         data,
         {
           withCredentials: true,
         }
       );
-
-      if (res.data.success) {
-        setUserProfilePic(res.data.pic_url!);
-        toast.success(res.data.message);
-        setPic("");
+      setUserProfilePic(res.data.pic_url);
+      return res.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        toast.error(error.response?.data.message);
       }
+    }
+  }
+
+  async function getOneAddress(id: string) {
+    try {
+      const res = await axios.get<SingleAddress>(
+        `${process.env.NEXT_PUBLIC_API_URL}profile/one-address?id=${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        toast.error(error.response?.data.message);
+      }
+    }
+  }
+
+  async function deleteAddress(id: string) {
+    try {
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}profile/delete-address?id=${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        toast.error(error.response?.data.message);
+      }
+    }
+  }
+
+  async function updateDefaultAddress(id: string) {
+    console.log(id);
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}profile/update-default-address`,
+        {
+          id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      return res.data;
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error.response?.data);
@@ -170,6 +243,11 @@ export const CartProvider: React.FC<{
     updateProfilePicture,
     pic,
     setPic,
+    getOneAddress,
+    deleteAddress,
+    updateDefaultAddress,
+    selectedAddress,
+    setSelectedAddress,
   };
 
   return (

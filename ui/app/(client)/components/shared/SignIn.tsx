@@ -19,6 +19,8 @@ import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
+import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
+import { DefaultResponse } from "@/types";
 
 interface SignInProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,7 +31,8 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
   const router = useRouter();
   const params = useSearchParams();
   const redirectPath = params.get("redirect");
-  const wishlist = useWishlist();
+
+  const { setUserProfilePic } = useGlobalStoreContext();
 
   const {
     register: registerForm,
@@ -59,6 +62,8 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
         if (redirectPath) {
           router.push(redirectPath);
         }
+
+        setUserProfilePic(res?.data?.profile?.avatar || "/images/user.png");
 
         setOpen(false);
         router.refresh();

@@ -81,3 +81,19 @@ export interface CartItem {
 export interface UpdateProfileResponse extends DefaultResponse {
   pic_url?: string;
 }
+
+export interface SingleAddress {
+  success: boolean;
+  item: {
+    fullName: string;
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    zipCode: number;
+    phone: number;
+    landmark: string;
+    isDefault: boolean;
+    _id: string;
+  };
+}

@@ -4,9 +4,12 @@ import { checkAuth } from "@/services/auth/checkAuth";
 import { redirect } from "next/navigation";
 import Address from "./components/Address";
 import UpdateProfilePic from "./components/UpdateProfilePic";
+import { fetchAddress } from "@/services/profile";
 
 export default async function page() {
   const user = await checkAuth();
+
+  const addressList = await fetchAddress();
 
   if (!user) {
     redirect("/?login=true&redirect=/profile");
@@ -29,9 +32,9 @@ export default async function page() {
               <div className="flex-[1]">
                 <h4 className="mons font-semibold mb-2">Address Management</h4>
 
-                <Address />
+                <Address addressList={addressList} />
 
-                <hr className="hidden md:block border-1 border-blue-gray-100 w-full mt-6" />
+                {/* <hr className="hidden md:block border-1 border-blue-gray-100 w-full mt-6" />
 
                 <div className="hidden md:flex flex-col items-center justify-center h-[200px] bg-gray-100 rounded-md mt-6">
                   <h4 className="mons font-semibold text-lg text-gray-800">
@@ -49,7 +52,7 @@ export default async function page() {
                   >
                     Working on this feature. It will be available soon.
                   </small>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
