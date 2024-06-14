@@ -108,3 +108,12 @@ export interface IAddress extends Document {
     }
   ];
 }
+
+export interface Coupon {
+  id: string;
+  title: string;
+  code: string;
+  validUpto: Date;
+  discount: number;
+  updatedAt: Date;
+}

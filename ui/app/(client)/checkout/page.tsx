@@ -2,8 +2,10 @@ import React from "react";
 import AddressBox from "./components/AddressBox";
 import ProceedPayment from "./components/ProceedPayment";
 import Heading from "../shared/Heading";
+import { checkAuth } from "@/services/auth/checkAuth";
+import { redirect } from "next/navigation";
 
-export default function page() {
+export default async function page() {
   return (
     <div className="p-4">
       <div className="max-w-full md:max-w-screen-xl mx-auto mb-10 mt-20">

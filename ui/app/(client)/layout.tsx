@@ -29,7 +29,7 @@ export default async function HomeLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <Header authStatus={authStatus} />
+        <Header />
         <Suspense fallback={<Spinner />}>{children}</Suspense>
         <Footer />
       </body>

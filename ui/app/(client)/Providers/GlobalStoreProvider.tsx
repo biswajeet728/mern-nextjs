@@ -63,6 +63,10 @@ interface CartContextType {
   setSelectedAddress: React.Dispatch<
     React.SetStateAction<AddressItem | undefined>
   >;
+  verifyCoupon(code: string): Promise<{
+    valid: boolean;
+    discount: number;
+  }>;
 }
 
 const GloblStoreContext = createContext<CartContextType | undefined>(undefined);
@@ -227,6 +231,29 @@ export const CartProvider: React.FC<{
     }
   }
 
+  async function verifyCoupon(code: string) {
+    console.log(code);
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_CATALOGUE_URL}coupon/verify-coupon`,
+        {
+          code,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(res.data);
+
+      return res.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+      }
+    }
+  }
+
   const contextValue: CartContextType = {
     items,
     setItems,
@@ -248,6 +275,7 @@ export const CartProvider: React.FC<{
     updateDefaultAddress,
     selectedAddress,
     setSelectedAddress,
+    verifyCoupon,
   };
 
   return (

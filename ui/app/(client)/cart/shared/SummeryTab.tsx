@@ -49,14 +49,6 @@ export default function SummeryTab({}: {}) {
       "
         />
 
-        <div className="mb-4">
-          <h3 className="mons font-semibold text-lg text-black">
-            Have a Coupon?
-          </h3>
-          <div className="mt-3">
-            <Input crossOrigin={""} label="Enter Coupon" />
-          </div>
-        </div>
         <div className="flex items-center justify-between">
           <h3 className="mons font-semibold text-lg text-black">
             Grand Total:
@@ -68,14 +60,16 @@ export default function SummeryTab({}: {}) {
 
         <div className="flex items-center justify-end">
           {user ? (
-            <Button
-              placeholder={""}
-              className="mt-10"
-              variant="gradient"
-              disabled={items.length === 0}
-            >
-              <Link href="/checkout">Proceed to Checkout</Link>
-            </Button>
+            <Link href={"/checkout"}>
+              <Button
+                placeholder={""}
+                className="mt-10"
+                variant="gradient"
+                disabled={items.length === 0}
+              >
+                Proceed to Checkout
+              </Button>
+            </Link>
           ) : (
             <Button
               placeholder={""}

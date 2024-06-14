@@ -12,10 +12,10 @@ export default function AddressBox() {
     setOpen(!open);
   };
   return (
-    <div className="flex-1 mt-14 md:mt-0">
+    <div className="flex-[1.7] mt-14 md:mt-0">
       <div className="border border-gray-400 shadow-sm rounded-sm w-full p-2">
         <div className="flex flex-wrap gap-3">
-          <div className="relative h-[250px] w-full md:w-[300px] bg-gray-100 shadow-sm border border-gray-200 p-2">
+          <div className="relative h-[200px] w-full md:w-[250px] bg-gray-100 shadow-sm border border-gray-200 p-2">
             <div>
               <p
                 className="
@@ -69,7 +69,7 @@ export default function AddressBox() {
               </div>
             </div>
           </div>
-          <div className="relative h-[250px] w-full md:w-[300px] bg-gray-100 shadow-sm border border-gray-200 p-2">
+          <div className="relative h-[200px] w-full md:w-[250px] bg-gray-100 shadow-sm border border-gray-200 p-2">
             <div>
               <p
                 className="
@@ -125,7 +125,7 @@ export default function AddressBox() {
           </div>
           <Button
             placeholder={""}
-            className="h-[250px] w-full md:w-[300px] bg-gray-100 shadow-none border border-gray-200 flex items-center justify-center hover:!shadow-none"
+            className="h-[200px] w-full md:w-[250px] bg-gray-100 shadow-none border border-gray-200 flex items-center justify-center hover:!shadow-none"
             color="gray"
             ripple
             size="lg"
@@ -136,7 +136,7 @@ export default function AddressBox() {
         </div>
       </div>
 
-      <AddAdressModal open={open} handleOpen={handleOpen} />
+      <AddAdressModal open={open} setOpen={setOpen} handleOpen={handleOpen} />
     </div>
   );
 }
