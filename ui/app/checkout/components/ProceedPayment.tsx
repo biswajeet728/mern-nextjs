@@ -14,9 +14,15 @@ export default function ProceedPayment() {
     setOpenAuthModal,
     openAuthModal,
     verifyCoupon,
+    finalTotal,
+    discountTotal,
+    setDiscountTotal,
+    setFinalTotal,
   } = useGlobalStoreContext();
 
-  const [discountPercentage, setDiscountPercentage] = React.useState(0);
+  const [discountPercentage, setDiscountPercentage] = React.useState<
+    number | null
+  >(null);
   const [discountError, setDiscountError] = React.useState("");
   const [couponCode, setCouponCode] = React.useState("");
 
@@ -39,7 +45,7 @@ export default function ProceedPayment() {
   };
 
   const discountAmount = React.useMemo(() => {
-    return Math.round((total * discountPercentage) / 100);
+    return Math.round((total * discountPercentage!) / 100);
   }, [total, discountPercentage]);
 
   const taxesAmount = React.useMemo(() => {
@@ -54,6 +60,16 @@ export default function ProceedPayment() {
   const grandWithoutDiscountTotal = React.useMemo(() => {
     return total + taxesAmount;
   }, [total, taxesAmount]);
+
+  React.useEffect(() => {
+    if (discountPercentage !== null) {
+      setFinalTotal(grandWithDiscountTotal);
+      setDiscountTotal(discountAmount);
+    } else {
+      setFinalTotal(grandWithoutDiscountTotal);
+      setDiscountTotal(0);
+    }
+  }, [discountPercentage]);
 
   return (
     <div className="flex-[0.99]">
@@ -108,7 +124,7 @@ export default function ProceedPayment() {
               color="green"
               variant="gradient"
               onClick={handleCoupon}
-              disabled={discountPercentage > 0 || !couponCode}
+              disabled={discountPercentage! > 0 || !couponCode}
             >
               Apply
             </Button>

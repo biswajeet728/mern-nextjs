@@ -1,8 +1,6 @@
 import "dotenv/config";
 import { cleanEnv, str, num } from "envalid";
 
-import path from "path";
-
 export const config = cleanEnv(process.env, {
   MONGO_URI: str(),
   NODE_ENV: str({

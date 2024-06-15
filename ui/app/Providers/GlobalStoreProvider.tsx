@@ -1,6 +1,5 @@
 "use client";
 
-import { checkAuth } from "@/services/auth/checkAuth";
 import { addMultipleItems, getProductCarts } from "@/services/cart";
 import { AddressItem } from "@/services/profile";
 import { WishlistItem } from "@/services/wishlist";
@@ -67,6 +66,10 @@ interface CartContextType {
     valid: boolean;
     discount: number;
   }>;
+  finalTotal: number;
+  discountTotal: number;
+  setFinalTotal: React.Dispatch<React.SetStateAction<number>>;
+  setDiscountTotal: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const GloblStoreContext = createContext<CartContextType | undefined>(undefined);
@@ -87,6 +90,8 @@ export const CartProvider: React.FC<{
   );
   const [pic, setPic] = React.useState<string>("");
   const [selectedAddress, setSelectedAddress] = React.useState<AddressItem>();
+  const [finalTotal, setFinalTotal] = React.useState<number>(0);
+  const [discountTotal, setDiscountTotal] = React.useState<number>(0);
 
   const ids = useMemo(
     () =>
@@ -232,7 +237,6 @@ export const CartProvider: React.FC<{
   }
 
   async function verifyCoupon(code: string) {
-    console.log(code);
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_CATALOGUE_URL}coupon/verify-coupon`,
@@ -243,8 +247,6 @@ export const CartProvider: React.FC<{
           withCredentials: true,
         }
       );
-
-      console.log(res.data);
 
       return res.data;
     } catch (error) {
@@ -276,6 +278,10 @@ export const CartProvider: React.FC<{
     selectedAddress,
     setSelectedAddress,
     verifyCoupon,
+    discountTotal,
+    finalTotal,
+    setFinalTotal,
+    setDiscountTotal,
   };
 
   return (

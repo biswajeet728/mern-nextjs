@@ -111,7 +111,11 @@ export default function UserBox({ user }: { user: Profile | null }) {
             </MenuItem>
           </Link>
           <Link href="/notifications">
-            <MenuItem placeholder={""} className="flex items-center gap-2">
+            <MenuItem
+              placeholder={""}
+              className="flex items-center gap-2"
+              disabled
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

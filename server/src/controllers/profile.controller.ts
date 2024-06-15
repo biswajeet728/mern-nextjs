@@ -1,9 +1,12 @@
 import { TryCatch } from "@/middlewares/error.middleware";
 import User from "@/models/User";
-import { ErrorHandler } from "@/utils/helper";
+import { ErrorHandler, config } from "@/utils/helper";
 import { Request, RequestHandler } from "express";
 import cloudinary, { UploadApiResponse } from "cloudinary";
 import Address from "@/models/Address";
+import crypto from "crypto";
+import PasswordReset from "@/models/PasswordReset";
+import { sendEmail } from "@/utils/features";
 
 const uploadImage = (filePath: string): Promise<UploadApiResponse> => {
   return cloudinary.v2.uploader.upload(filePath, {
@@ -259,3 +262,67 @@ export const defaultAddress: RequestHandler = TryCatch(async (req, res) => {
     message: "Default address set",
   });
 });
+
+export const deleteProfile: RequestHandler = TryCatch(async (req, res) => {
+  await User.findByIdAndDelete(req.user.id);
+
+  res.status(200).json({
+    success: true,
+    message: "Account deleted successfully",
+  });
+});
+
+export const forgotPassword: RequestHandler = TryCatch(async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ErrorHandler("User not found", 404);
+  }
+
+  const resettoken = crypto.randomBytes(36).toString("hex");
+  await PasswordReset.create({ owner: user._id, token: resettoken });
+
+  const resetUrl = `${config.CLIENT_URL}reset-password?token=${resettoken}&id=${user._id}`;
+
+  await sendEmail(email, resetUrl, "forgot-password");
+
+  res.status(200).json({
+    success: true,
+    message: "Reset password link sent to email",
+  });
+});
+
+export const resetPassword: RequestHandler = TryCatch(async (req, res) => {
+  const { token, id } = req.params;
+  const { password } = req.body;
+
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw new ErrorHandler("Invalid user", 400);
+  }
+
+  const resetToken = await PasswordReset.findOne({ owner: id });
+
+  if (!resetToken) {
+    throw new ErrorHandler("Invalid or expired reset token", 400);
+  }
+
+  if (!(await resetToken.compareToken(token))) {
+    throw new ErrorHandler("Invalid or expired reset token", 400);
+  }
+
+  user.password = password;
+
+  await user.save();
+
+  await PasswordReset.findByIdAndDelete(resetToken._id);
+
+  res.status(200).json({
+    success: true,
+    message: "Password reset successfully",
+  });
+});
+
+// http://localhost:3000//reset-password/366247d9bb13b602f10dcc4caac5ba19be5082ea22deb6c3b6e1218f9d006a6af766db12/user/666d5b7f5fc6222b23a6d8da

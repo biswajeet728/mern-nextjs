@@ -196,7 +196,7 @@ function Header() {
 
             <Link
               href="/cart"
-              className="block md:hidden absolute bottom-3 right-5 md:right-8 md:relative md:top-0 lg:top-0right-0"
+              className="block md:hidden absolute bottom-[5px] right-5 md:right-8 md:relative md:top-0 lg:top-0right-0"
             >
               <Badge content={items.length} className="px-[6px]">
                 <IconButton
@@ -233,7 +233,7 @@ function Header() {
 
               <Link
                 href="/cart"
-                className="hidden md:block absolute top-5 right-20 md:right-8 md:relative md:top-0 lg:top-0right-0"
+                className="hidden md:block absolute top-5 right-20 md:right-8 md:relative md:top-1 lg:top-0right-0"
               >
                 <Badge content={items.length} className="px-[6px]">
                   <IconButton

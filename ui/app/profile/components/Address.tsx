@@ -14,7 +14,6 @@ import AsyncButton from "../../components/AsyncButton";
 import { toast } from "sonner";
 import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
 import { useRouter } from "next/navigation";
-import axios, { AxiosError } from "axios";
 
 function Address({ addressList }: { addressList: AddressType | null }) {
   const [isEdit, setIsEdit] = React.useState<boolean>(false);

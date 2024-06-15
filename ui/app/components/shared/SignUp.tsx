@@ -1,8 +1,8 @@
 "use client";
 
-import { useWishlist } from "@/store/use-wishlist";
-import getGoogleOAuth from "@/utils/googleauth";
-import { SignInInput, signinSchema } from "@/validators";
+import axiosInstance from "@/lib/axios";
+import { DefaultResponse } from "@/types";
+import { SignUpInput, signUpSchema } from "@/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -13,43 +13,36 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import axios, { AxiosError } from "axios";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
-import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
-import { DefaultResponse } from "@/types";
 
-interface SignInProps {
+interface SignUpProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleFormToggle?: () => void;
+  handleFormToggle: (type: string) => void;
 }
 
-function SignIn({ setOpen, handleFormToggle }: SignInProps) {
+function SignUp({ setOpen, handleFormToggle }: SignUpProps) {
   const router = useRouter();
-  const params = useSearchParams();
-  const redirectPath = params.get("redirect");
-
-  const { setUserProfilePic } = useGlobalStoreContext();
-
   const {
     register: registerForm,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
     reset,
     getValues,
-  } = useForm<SignInInput>({
-    resolver: zodResolver(signinSchema),
+  } = useForm<SignUpInput>({
+    resolver: zodResolver(signUpSchema),
     mode: "all",
   });
 
-  const handleSignInSubmit = async (data: SignInInput) => {
+  const handleSignInSubmit = async (data: SignUpInput) => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}auth/signin`,
+      const res = await axiosInstance.post<DefaultResponse>(
+        `${process.env.NEXT_PUBLIC_API_URL}auth/signup`,
         {
+          username: data.username,
           email: data.email,
           password: data.password,
         },
@@ -59,21 +52,21 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
       );
 
       if (res.data.success) {
-        if (redirectPath) {
-          router.push(redirectPath);
-        }
-
-        setUserProfilePic(res?.data?.profile?.avatar || "/images/user.png");
-
         setOpen(false);
+        toast.success(res.data.message || "Account Registered successfully");
         router.refresh();
       }
-      handleFormToggle && handleFormToggle();
-    } catch (error) {
+      setOpen(false);
+    } catch (error: any) {
+      // console.log(JSON.stringify(error.response.data.error[0].message, null, 2));
       // check if the error is an AxiosError
       if (error instanceof AxiosError) {
         if (error.response?.data) {
-          toast.error(error.response.data.message || "An error occurred");
+          toast.error(
+            error.response.data.message ||
+              error.response.data.error[0].message ||
+              "An error occurred"
+          );
         }
       }
     }
@@ -89,8 +82,25 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
             color="blue-gray"
             className="mons"
           >
-            Sign In
+            Sign Up
           </Typography>
+
+          <div>
+            <Typography placeholder={""} className="mb-2" variant="h6">
+              Your Username
+            </Typography>
+            <Input
+              crossOrigin={"anonymous"}
+              label="Username"
+              size="lg"
+              {...registerForm("username")}
+            />
+            {errors.username && (
+              <span className="text-red-500 w-full">
+                {errors.username.message}
+              </span>
+            )}
+          </div>
 
           <div>
             <Typography placeholder={""} className="mb-2" variant="h6">
@@ -138,7 +148,7 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
             loading={isSubmitting}
             disabled={!isValid}
           >
-            Sign In
+            Sign Up
           </Button>
 
           <Typography
@@ -149,18 +159,18 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
             Or
           </Typography>
 
-          <Link
-            href={getGoogleOAuth()}
-            className="flex items-center justify-center gap-3 bg-gradient-to-tr from-gray-900 to-gray-800 text-white shadow-md shadow-gray-900/10 rounded-lg p-2 w-full"
+          <Button
+            placeholder={""}
+            className="flex items-center justify-center gap-3"
+            fullWidth
+            onClick={() => console.log("Login with Google")} // Implement Google login
           >
             <FcGoogle size={22} />
-            <Typography placeholder={""} variant="h6">
-              Login with Google
-            </Typography>
-          </Link>
+            Login with Google
+          </Button>
 
           <Typography placeholder={""} className="mt-4 flex justify-center">
-            Don't have an account?
+            Already have an account?{" "}
             <Typography
               placeholder={""}
               as="a"
@@ -170,10 +180,10 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
               className="ml-1 font-bold"
               onClick={(e) => {
                 e.preventDefault();
-                handleFormToggle && handleFormToggle();
+                handleFormToggle("login");
               }}
             >
-              Sign Up
+              Sign In
             </Typography>
           </Typography>
         </CardFooter>
@@ -182,4 +192,4 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
   );
 }
 
-export default memo(SignIn);
+export default memo(SignUp);

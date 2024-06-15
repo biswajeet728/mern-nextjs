@@ -4,8 +4,10 @@ import {
   addNewAddress,
   defaultAddress,
   deleteAddress,
+  forgotPassword,
   getAddresses,
   getSingleAddress,
+  resetPassword,
   updateAddress,
   updateProfileData,
   updateProfilePicture,
@@ -24,5 +26,8 @@ router.put("/update-address", isAuthenticated, updateAddress);
 router.delete("/delete-address", isAuthenticated, deleteAddress);
 router.get("/one-address", isAuthenticated, getSingleAddress);
 router.post("/update-default-address", isAuthenticated, defaultAddress);
+
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token/user/:id", resetPassword);
 
 export default router;
