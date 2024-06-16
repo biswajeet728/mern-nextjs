@@ -1,0 +1,140 @@
+import { TryCatch } from "@/middlewares/error.middleware";
+import Address from "@/models/Address";
+import Order from "@/models/Order";
+import User from "@/models/User";
+import { ErrorHandler, config } from "@/utils/helper";
+import { RequestHandler } from "express";
+import { createSession } from "./payment/stripe";
+import Product from "@/models/Product";
+import Stripe from "stripe";
+
+const stripe = new Stripe(config.STRIPE_SECRET!, {
+  apiVersion: "2024-04-10",
+  typescript: true,
+});
+
+export const createOrder: RequestHandler = TryCatch(async (req, res, next) => {
+  const { orderItems, finalTotal, discountTotal, address } = req.body;
+
+  if (!orderItems || !finalTotal || !address) {
+    return next(new ErrorHandler("Please fill all the fields", 400));
+  }
+
+  const addressList = await Address.findOne({ user: req.user.id });
+  if (!addressList) {
+    return next(new ErrorHandler("Address not found", 404));
+  }
+
+  const singleAddress = addressList.items.find(
+    (item: any) => item._id.toString() === address
+  );
+
+  if (!singleAddress) {
+    return next(new ErrorHandler("Address not found", 404));
+  }
+
+  orderItems.map((item: any) => {
+    item.productId = item._id;
+    delete item._id;
+  });
+
+  const order = new Order({
+    orderItems,
+    finalTotal,
+    discountTotal,
+    address: singleAddress,
+    user: await User.findById(req.user.id).select(
+      "-password -role -verified -googleId -tokens -__v -createdAt -updatedAt"
+    ),
+  });
+
+  await order.save();
+
+  const session = await createSession({
+    amount: discountTotal ? discountTotal : finalTotal,
+    currency: "INR",
+    orderId: order._id.toString(),
+    orderItems, // Pass orderItems to the createSession function
+  });
+
+  return res.status(201).json({
+    paymentUrl: session.paymentUrl,
+    order,
+  });
+});
+
+export const instantCheckOut: RequestHandler = TryCatch(
+  async (req, res, next) => {
+    const { productId } = req.body;
+
+    if (!productId) {
+      return next(new ErrorHandler("Please fill all the fields", 400));
+    }
+
+    const product = await Product.findById(productId)!;
+
+    if (!product) {
+      return next(new ErrorHandler("Product not found", 404));
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    console.log(product, "product");
+
+    const amount = product.price * 1;
+
+    console.log(amount, "amount");
+
+    const customer = await stripe.customers.create({
+      email: user.email,
+      metadata: {
+        userId: user._id.toString(),
+        type: "instant-checkout",
+        product: JSON.stringify({
+          id: product._id,
+          name: product.name,
+          price: product.price,
+          totalPrice: amount,
+          thumbnail: product.images[0].url,
+          qty: 1,
+        }),
+      },
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "INR",
+            unit_amount: amount * 100,
+            product_data: {
+              name: product.name,
+              images: [product.images[0].url],
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${config.CLIENT_URL}payement/success`,
+      cancel_url: `${config.CLIENT_URL}payement/failed`,
+      customer: customer.id,
+      shipping_address_collection: { allowed_countries: ["IN"] },
+      phone_number_collection: { enabled: true },
+      metadata: {
+        type: "instant-checkout",
+        productId: product._id.toString(),
+        userId: user._id.toString(),
+      },
+    });
+
+    return res.status(201).json({
+      paymentUrl: session.url,
+    });
+  }
+);

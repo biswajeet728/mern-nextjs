@@ -10,6 +10,8 @@ import authRoute from "@/routes/auth.route";
 import profileRoute from "@/routes/profile.route";
 import cartRoute from "@/routes/cart.route";
 import wishlistRoute from "@/routes/wishlist.route";
+import ordersRoute from "@/routes/order.route";
+import paymentRoute from "@/routes/payment.route";
 
 // utils
 import { config } from "./utils/helper";
@@ -43,6 +45,8 @@ app.use("/api/auth", authRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/wishlist", wishlistRoute);
+app.use("/api/orders", ordersRoute);
+app.use("/api/payment", paymentRoute);
 
 // error handler
 app.use(errorMiddleware);

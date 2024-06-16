@@ -89,17 +89,16 @@ export default function AddAdressModal({
               defaultValue={address?.fullName}
             />
           </div>
-          {!user?.profile?.phone ||
-            (isEdit && (
-              <div className="w-full mt-4">
-                <Input
-                  label="Phone Number"
-                  crossOrigin={""}
-                  name="phone"
-                  defaultValue={address?.phone}
-                />
-              </div>
-            ))}
+          {!user?.profile?.phone || isEdit ? (
+            <div className="w-full mt-4">
+              <Input
+                label="Phone Number"
+                crossOrigin={""}
+                name="phone"
+                defaultValue={address?.phone}
+              />
+            </div>
+          ) : null}
           <div className="w-full mt-4">
             <Input
               label="Flat, House No, Building"

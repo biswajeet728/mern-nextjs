@@ -30,6 +30,10 @@ export const config = cleanEnv(process.env, {
   CLOUDINARY_NAME: str({}),
   CLOUDINARY_API_KEY: str({}),
   CLOUDINARY_API_SECRET: str({}),
+
+  STRIPE_PUBLIC_KEY: str({}),
+  STRIPE_SECRET: str({}),
+  STRIPE_WEBHOOK_SECRET: str({}),
 });
 
 export class ErrorHandler extends Error {

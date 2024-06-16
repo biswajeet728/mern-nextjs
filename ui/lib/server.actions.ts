@@ -73,7 +73,7 @@ export async function addAddress(data: FormData) {
     return res.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      // console.log(error.response?.data);
+      console.log(error);
       return error.response?.data;
     }
   }

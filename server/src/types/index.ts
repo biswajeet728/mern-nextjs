@@ -117,3 +117,42 @@ export interface Coupon {
   discount: number;
   updatedAt: Date;
 }
+
+export enum OrderStatus {
+  RECEIVED = "received",
+  CONFIRMED = "confirmed",
+  PREPARING = "preparing",
+  OUT_FOR_DELIVERY = "out_for_deliver",
+  DELIVERED = "delivered",
+}
+
+export enum PaymentStatus {
+  PENDING = "pending",
+  PAID = "paid",
+  FAILED = "failed",
+}
+
+export interface CartItem {
+  productId: mongoose.Types.ObjectId;
+  name: string;
+  price: number;
+  images: [
+    {
+      url: string;
+      public_id: string;
+    }
+  ];
+  category: string;
+  quantity: number;
+}
+
+export interface Order {
+  orderItems: CartItem[];
+  user: IUser;
+  finalTotal: number;
+  discountTotal?: number;
+  address: object;
+  orderStatus: OrderStatus;
+  paymentStatus: PaymentStatus;
+  paymentId?: string;
+}
