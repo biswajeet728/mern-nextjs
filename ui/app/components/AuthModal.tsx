@@ -10,7 +10,13 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import ForgotPass from "./shared/ForgotPass";
 
-export function AuthModal({ open, setOpen }: any) {
+interface Props {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  singlePage?: boolean;
+}
+
+export function AuthModal({ open, setOpen, singlePage = false }: Props) {
   const [formType, setFormType] = React.useState<
     "login" | "register" | "forgotpass"
   >("login");
@@ -38,7 +44,11 @@ export function AuthModal({ open, setOpen }: any) {
       open={open}
       handler={() => {
         setOpen(false);
-        router.push("/");
+        if (singlePage) {
+          router.back();
+        } else {
+          router.push("/");
+        }
         setFormType("login");
       }}
       className="bg-transparent shadow-none"

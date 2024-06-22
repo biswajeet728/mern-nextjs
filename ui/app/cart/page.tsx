@@ -1,7 +1,5 @@
 import React from "react";
-import CartTable from "./shared/CartTable";
 import Heading from "../shared/Heading";
-import SummeryTab from "./shared/SummeryTab";
 import { checkAuth } from "@/services/auth/checkAuth";
 import Container from "./Container";
 

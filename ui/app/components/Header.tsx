@@ -37,6 +37,17 @@ function Header() {
   const [queryText, setQueryText] = useState("");
   const [searchResults, setSearchResults] = useState<ProductType[]>([]);
 
+  const pathname = window.location.pathname;
+
+  const checkPathName = React.useMemo(() => {
+    let res = false;
+    if (pathname.includes("/product")) {
+      res = true;
+    }
+
+    return res;
+  }, [pathname]);
+
   useEffect(() => {
     if (openLogin) {
       setOpenAuthModal(true);
@@ -268,7 +279,11 @@ function Header() {
         </div>
       </Navbar>
 
-      <AuthModal open={openAuthModal} setOpen={setOpenAuthModal} />
+      <AuthModal
+        open={openAuthModal}
+        setOpen={setOpenAuthModal}
+        singlePage={checkPathName || false}
+      />
     </div>
   );
 }

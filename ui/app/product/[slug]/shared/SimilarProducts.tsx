@@ -1,7 +1,7 @@
 "use client";
 
-import Heading from "@/app/(client)/shared/Heading";
-import ProductCard from "@/app/(client)/shared/ProductCard";
+import Heading from "@/app/shared/Heading";
+import ProductCard from "@/app/shared/ProductCard";
 import { ResponseProduct } from "@/services/products";
 import React from "react";
 

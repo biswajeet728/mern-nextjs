@@ -1,6 +1,9 @@
 "use client";
 
-import { ProductSingle } from "@/services/products";
+import { useGlobalStoreContext } from "@/app/Providers/GlobalStoreProvider";
+import { createInstantOrder } from "@/services/orders";
+import { useCart } from "@/store/use-cart";
+import { useServerCart } from "@/store/use-server-cart";
 import { MainProduct } from "@/types";
 import { Button, Typography } from "@material-tailwind/react";
 import React from "react";
@@ -9,6 +12,34 @@ import { GoDash, GoPlus } from "react-icons/go";
 
 export default function SingleProduct({ product }: { product: MainProduct }) {
   const [active, setActive] = React.useState(product?.images[0]?.url);
+  const cart = useCart();
+  const serverCart = useServerCart();
+  const { user, openAuthModal, setOpenAuthModal } = useGlobalStoreContext();
+  const [quantity, setQuantity] = React.useState(1);
+
+  const handleAddToCart = () => {
+    cart.addItem({
+      _id: product._id,
+      quantity,
+    });
+  };
+
+  const handleAddToServerCart = () => {
+    serverCart.addItem(product._id, quantity);
+  };
+
+  const instantCheckOut = async () => {
+    try {
+      const res = await createInstantOrder(product._id);
+
+      if (res.data.paymentUrl) {
+        window.location.href = res.data.paymentUrl;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-14 md:mt-0">
       <div className="col-span-full md:col-span-2 bg-blue-gray-50 px-3 py-2">
@@ -161,11 +192,18 @@ export default function SingleProduct({ product }: { product: MainProduct }) {
               variant="text"
               ripple
               disabled={product?.stock === 0}
+              onClick={() => {
+                if (quantity > 1) {
+                  setQuantity(quantity - 1);
+                } else {
+                  setQuantity(1);
+                }
+              }}
             >
               <GoDash size={24} />
             </Button>
             <div className="bg-gray-200 w-12 h-10 flex items-center justify-center shadow-md">
-              1
+              {quantity}
             </div>
             <Button
               placeholder={""}
@@ -173,6 +211,7 @@ export default function SingleProduct({ product }: { product: MainProduct }) {
               variant="text"
               ripple
               disabled={product?.stock === 0}
+              onClick={() => setQuantity(quantity + 1)}
             >
               <GoPlus size={24} />
             </Button>
@@ -184,17 +223,39 @@ export default function SingleProduct({ product }: { product: MainProduct }) {
               className="bg-blue-400"
               ripple
               disabled={product?.stock === 0}
+              onClick={() => {
+                if (user) {
+                  handleAddToServerCart();
+                } else {
+                  handleAddToCart();
+                }
+              }}
             >
               Add to Cart
             </Button>
-            <Button
-              placeholder={""}
-              variant="outlined"
-              ripple
-              disabled={product?.stock === 0}
-            >
-              Buy Now
-            </Button>
+            {!user ? (
+              <Button
+                placeholder={""}
+                variant="outlined"
+                ripple
+                type="button"
+                disabled={product?.stock === 0}
+                onClick={() => setOpenAuthModal(!openAuthModal)}
+              >
+                Buy Now
+              </Button>
+            ) : (
+              <Button
+                placeholder={""}
+                variant="outlined"
+                ripple
+                type="button"
+                disabled={product?.stock === 0}
+                onClick={instantCheckOut}
+              >
+                Buy Now
+              </Button>
+            )}
           </div>
         </div>
       </div>

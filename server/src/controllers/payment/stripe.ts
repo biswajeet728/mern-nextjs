@@ -12,7 +12,7 @@ const stripe = new Stripe(config.STRIPE_SECRET!, {
 });
 
 export const createSession = async (options: PaymentOptions) => {
-  const { orderItems, amount, isBuyNow } = options;
+  const { orderItems, amount } = options;
   let lineItems;
 
   // Calculate the total amount from orderItems

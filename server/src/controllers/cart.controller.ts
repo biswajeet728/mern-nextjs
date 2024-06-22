@@ -69,9 +69,12 @@ export const addMultipleItemsToCart: RequestHandler = TryCatch(
       const newItems = productIds.filter((id) => !existingItems.includes(id));
 
       if (!newItems.length) {
-        return next(
-          new ErrorHandler("Product already exists in the Cart", 400)
-        );
+        // increase the quantity of the existing items
+        cart.items.forEach((item) => {
+          if (productIds.includes(item.productId.toString())) {
+            item.quantity += 1;
+          }
+        });
       }
 
       const items = newItems.map((id) => ({ productId: id, quantity: 1 }));

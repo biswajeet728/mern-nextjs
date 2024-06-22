@@ -23,7 +23,6 @@ export interface PaymentOptions {
     postalCode: string;
     country: string;
   };
-  isBuyNow?: boolean;
 }
 
 type GatewayPaymentStatus = "no_payment_required" | "paid" | "unpaid";

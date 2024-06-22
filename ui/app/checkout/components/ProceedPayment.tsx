@@ -3,6 +3,8 @@
 import { Button, Input } from "@material-tailwind/react";
 import React from "react";
 import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
+import { createOrder } from "@/services/orders";
+import { toast } from "sonner";
 
 const TAXES_PERCENTAGE = 18;
 
@@ -18,6 +20,7 @@ export default function ProceedPayment() {
     discountTotal,
     setDiscountTotal,
     setFinalTotal,
+    selectedAddress,
   } = useGlobalStoreContext();
 
   const [discountPercentage, setDiscountPercentage] = React.useState<
@@ -25,6 +28,7 @@ export default function ProceedPayment() {
   >(null);
   const [discountError, setDiscountError] = React.useState("");
   const [couponCode, setCouponCode] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const handleCoupon = async () => {
     if (!couponCode) {
@@ -70,6 +74,31 @@ export default function ProceedPayment() {
       setDiscountTotal(0);
     }
   }, [discountPercentage]);
+
+  const handlePayment = async () => {
+    try {
+      if (!user || !selectedAddress) {
+        toast.error("Required Fields are missing.");
+        return;
+      }
+
+      setLoading(true);
+
+      const res = await createOrder({
+        orderItems: items,
+        address: selectedAddress?._id!,
+        finalTotal: grandWithDiscountTotal,
+        discountTotal: discountAmount ? discountAmount : 0,
+      });
+      if (res.data.paymentUrl) {
+        window.location.href = res.data.paymentUrl;
+      }
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+    }
+  };
 
   return (
     <div className="flex-[0.99]">
@@ -159,9 +188,11 @@ export default function ProceedPayment() {
             color="green"
             className="mt-10"
             variant="gradient"
-            disabled
+            disabled={!selectedAddress || !user}
+            onClick={handlePayment}
+            loading={loading}
           >
-            Pay Using Razorpay
+            Pay Using Stripe
           </Button>
         </div>
       </div>

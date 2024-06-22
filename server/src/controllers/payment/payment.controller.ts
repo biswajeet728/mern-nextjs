@@ -5,7 +5,7 @@ import Order from "@/models/Order";
 import { OrderStatus, PaymentStatus } from "@/types";
 import Stripe from "stripe";
 import Product from "@/models/Product";
-import { ErrorHandler } from "@/utils/helper";
+import { ErrorHandler, config } from "@/utils/helper";
 import User from "@/models/User";
 
 export const handleWebhook: RequestHandler = TryCatch(
@@ -23,6 +23,7 @@ export const handleWebhook: RequestHandler = TryCatch(
         verifiedSession.metadata.type === "instant-checkout";
 
       if (isInstantCheckout) {
+        console.log("Instant Checkout");
         // create order
         const id = verifiedSession.metadata.productId;
         const user_id = verifiedSession.metadata.userId;

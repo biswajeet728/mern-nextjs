@@ -85,7 +85,9 @@ export const instantCheckOut: RequestHandler = TryCatch(
 
     console.log(product, "product");
 
-    const amount = product.price * 1;
+    const amount = product.salePrice
+      ? product.salePrice * 1
+      : product.price * 1;
 
     console.log(amount, "amount");
 
@@ -97,7 +99,7 @@ export const instantCheckOut: RequestHandler = TryCatch(
         product: JSON.stringify({
           id: product._id,
           name: product.name,
-          price: product.price,
+          price: product.salePrice ? product.salePrice : product.price,
           totalPrice: amount,
           thumbnail: product.images[0].url,
           qty: 1,
@@ -121,7 +123,7 @@ export const instantCheckOut: RequestHandler = TryCatch(
         },
       ],
       mode: "payment",
-      success_url: `${config.CLIENT_URL}payement/success`,
+      success_url: `${config.CLIENT_URL}orders`,
       cancel_url: `${config.CLIENT_URL}payement/failed`,
       customer: customer.id,
       shipping_address_collection: { allowed_countries: ["IN"] },
@@ -138,3 +140,51 @@ export const instantCheckOut: RequestHandler = TryCatch(
     });
   }
 );
+
+export const getOrders: RequestHandler = TryCatch(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user.id });
+
+  if (!orders) {
+    return next(new ErrorHandler("Orders not found", 404));
+  }
+
+  return res.status(200).json(orders);
+});
+
+export const getOrder: RequestHandler = TryCatch(async (req, res, next) => {
+  const order = await Order.findById(req.query.id);
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found", 404));
+  }
+
+  return res.status(200).json(order);
+});
+
+export const updateOrderStatus: RequestHandler = TryCatch(
+  async (req, res, next) => {
+    const order = await Order.findById(req.query.id);
+
+    if (!order) {
+      return next(new ErrorHandler("Order not found", 404));
+    }
+
+    order.orderStatus = req.body.status;
+
+    await order.save();
+
+    return res.status(200).json(order);
+  }
+);
+
+export const deleteOrder: RequestHandler = TryCatch(async (req, res, next) => {
+  const order = await Order.findById(req.query.id);
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found", 404));
+  }
+
+  await Order.findByIdAndDelete(req.query.id);
+
+  return res.status(200).json({ message: "Order deleted successfully" });
+});

@@ -324,5 +324,3 @@ export const resetPassword: RequestHandler = TryCatch(async (req, res) => {
     message: "Password reset successfully",
   });
 });
-
-// http://localhost:3000//reset-password/366247d9bb13b602f10dcc4caac5ba19be5082ea22deb6c3b6e1218f9d006a6af766db12/user/666d5b7f5fc6222b23a6d8da
