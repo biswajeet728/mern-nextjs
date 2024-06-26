@@ -6,6 +6,8 @@ import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
 import { createOrder } from "@/services/orders";
 import { toast } from "sonner";
 import { useServerCart } from "@/store/use-server-cart";
+import { FaX } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 const TAXES_PERCENTAGE = 18;
 
@@ -28,6 +30,7 @@ export default function ProceedPayment() {
   const [discountError, setDiscountError] = React.useState("");
   const [couponCode, setCouponCode] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [isValidCoupon, setIsValidCoupon] = React.useState(false);
 
   const serverCart = useServerCart();
 
@@ -46,6 +49,12 @@ export default function ProceedPayment() {
 
     setDiscountPercentage(res.discount);
     setDiscountError("");
+    setIsValidCoupon(true);
+  };
+
+  const clearCoupon = () => {
+    setDiscountPercentage(null);
+    setIsValidCoupon(false);
     setCouponCode("");
   };
 
@@ -164,6 +173,17 @@ export default function ProceedPayment() {
             </Button>
           </div>
           <div className="text-red-500 mt-2">{discountError}</div>
+
+          {isValidCoupon && (
+            <div className="flex items-center gap-3 mt-3 border p-2 w-fit border-gray-400 border-opacity-55">
+              <span className="text-green-400 text-base">{couponCode}</span>
+              <IoClose
+                onClick={clearCoupon}
+                className="cursor-pointer -ml-2"
+                size={22}
+              />
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-between">
           <h3 className="mons font-semibold text-lg text-black">
