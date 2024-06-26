@@ -9,6 +9,7 @@ import {
   getSingleAddress,
   resetPassword,
   updateAddress,
+  updatePassword,
   updateProfileData,
   updateProfilePicture,
 } from "@/controllers/profile.controller";
@@ -29,5 +30,7 @@ router.post("/update-default-address", isAuthenticated, defaultAddress);
 
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token/user/:id", resetPassword);
+
+router.put("/update-password", isAuthenticated, updatePassword);
 
 export default router;

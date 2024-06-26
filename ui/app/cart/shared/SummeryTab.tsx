@@ -60,10 +60,23 @@ export default function SummeryTab({}: {}) {
 
         <div className="flex items-center justify-end">
           {user ? (
-            <Link href={"/checkout"}>
+            <Link
+              href={"/checkout"}
+              className={`
+                  ${
+                    items.length === 0
+                      ? "cursor-not-allowed pointer-events-none"
+                      : ""
+                  }
+                `}
+            >
               <Button
                 placeholder={""}
-                className="mt-10"
+                className={`mt-10 ${
+                  items.length === 0
+                    ? "cursor-not-allowed pointer-events-none"
+                    : ""
+                }`}
                 variant="gradient"
                 disabled={items.length === 0}
               >

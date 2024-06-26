@@ -215,7 +215,6 @@ export const CartProvider: React.FC<{
   }
 
   async function updateDefaultAddress(id: string) {
-    console.log(id);
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}profile/update-default-address`,

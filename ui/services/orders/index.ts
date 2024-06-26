@@ -1,3 +1,4 @@
+import { ResponseOrder } from "@/types";
 import axios from "axios";
 
 type OrderItemImage = {
@@ -45,6 +46,18 @@ export const createInstantOrder = async (productId: string) => {
     },
     {
       withCredentials: true,
+    }
+  );
+  return res;
+};
+
+export const getOrders = async (token: string) => {
+  const res = await axios.get<ResponseOrder[]>(
+    `${process.env.NEXT_PUBLIC_API_URL}orders/get-orders`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
   return res;

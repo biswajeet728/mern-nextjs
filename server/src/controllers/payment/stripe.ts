@@ -45,7 +45,7 @@ export const createSession = async (options: PaymentOptions) => {
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: `${config.CLIENT_URL}payement/success?orderId=${options.orderId}`,
+    success_url: `${config.CLIENT_URL}payment/success?orderId=${options.orderId}`,
     cancel_url: `${config.CLIENT_URL}payement/failed?orderId=${options.orderId}`,
     metadata: {
       orderId: options.orderId,

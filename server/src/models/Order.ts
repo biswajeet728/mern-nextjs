@@ -63,7 +63,7 @@ const OrderSchema = new Schema<Order>(
         },
         phone: {
           type: String,
-          required: true,
+          required: false,
         },
         bio: {
           type: String,
@@ -78,11 +78,11 @@ const OrderSchema = new Schema<Order>(
         avatar: {
           url: {
             type: String,
-            required: true,
+            required: false,
           },
           public_id: {
             type: String,
-            required: true,
+            required: false,
           },
         },
       }),

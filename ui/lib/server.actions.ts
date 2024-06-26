@@ -122,3 +122,33 @@ export async function updateAddress(data: FormData, id: string) {
     }
   }
 }
+
+export async function updatePassword(data: FormData) {
+  const oldPassword = data.get("oldPassword");
+  const newPassword = data.get("newPassword");
+  const confirmPassword = data.get("confirmPassword");
+
+  const cookiesData = cookies();
+
+  try {
+    const res = await axios.put<DefaultResponse>(
+      `${process.env.NEXT_PUBLIC_API_URL}profile/update-password`,
+      {
+        currentPassword: oldPassword,
+        newPassword,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${cookiesData.get("accessToken")?.value}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+      return error.response?.data;
+    }
+  }
+}

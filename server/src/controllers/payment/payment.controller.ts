@@ -7,6 +7,7 @@ import Stripe from "stripe";
 import Product from "@/models/Product";
 import { ErrorHandler, config } from "@/utils/helper";
 import User from "@/models/User";
+import Cart from "@/models/Cart";
 
 export const handleWebhook: RequestHandler = TryCatch(
   async (req, res, next) => {
@@ -82,6 +83,30 @@ export const handleWebhook: RequestHandler = TryCatch(
           },
           { new: true }
         );
+
+        // remove the product from the cart if payment is successful
+
+        if (isPaymentSuccess) {
+          const user = await User.findById(updatedOrder?.user);
+
+          if (!user) {
+            return next(new ErrorHandler("User not found", 404));
+          }
+
+          console.log(user, "user");
+
+          await Cart.findOneAndUpdate(
+            { userId: user?._id },
+            {
+              $pull: {
+                items: { productId: updatedOrder?.orderItems[0].productId },
+              },
+            },
+            { new: true }
+          );
+
+          // send email to the user
+        }
 
         return res.status(200).json(updatedOrder);
       }

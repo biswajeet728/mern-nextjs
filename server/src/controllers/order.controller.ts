@@ -16,6 +16,8 @@ const stripe = new Stripe(config.STRIPE_SECRET!, {
 export const createOrder: RequestHandler = TryCatch(async (req, res, next) => {
   const { orderItems, finalTotal, discountTotal, address } = req.body;
 
+  console.log(req.body, "req.body");
+
   if (!orderItems || !finalTotal || !address) {
     return next(new ErrorHandler("Please fill all the fields", 400));
   }
@@ -142,13 +144,17 @@ export const instantCheckOut: RequestHandler = TryCatch(
 );
 
 export const getOrders: RequestHandler = TryCatch(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user.id });
-
-  if (!orders) {
-    return next(new ErrorHandler("Orders not found", 404));
+  // Ensure req.user.id exists and is correctly set
+  if (!req.user || !req.user.id) {
+    return next(new ErrorHandler("User not found", 404));
   }
 
-  return res.status(200).json(orders);
+  // Fetch orders where the user ID matches the authenticated user
+  const userOrders = await Order.find({ "user._id": req.user.id }).exec();
+
+  console.log(userOrders, "userOrders");
+
+  return res.status(200).json(userOrders);
 });
 
 export const getOrder: RequestHandler = TryCatch(async (req, res, next) => {

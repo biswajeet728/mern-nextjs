@@ -324,3 +324,28 @@ export const resetPassword: RequestHandler = TryCatch(async (req, res) => {
     message: "Password reset successfully",
   });
 });
+
+export const updatePassword: RequestHandler = TryCatch(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    throw new ErrorHandler("Invalid user", 400);
+  }
+
+  const isMatch = await user.comparePassword(currentPassword);
+
+  if (!isMatch) {
+    throw new ErrorHandler("Invalid password", 400);
+  }
+
+  user.password = newPassword;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Password updated successfully",
+  });
+});

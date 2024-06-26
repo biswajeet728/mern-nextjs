@@ -34,6 +34,8 @@ export default function SingleProduct({ product }: { product: MainProduct }) {
 
       if (res.data.paymentUrl) {
         window.location.href = res.data.paymentUrl;
+
+        serverCart.clearCart();
       }
     } catch (error) {
       console.log(error);

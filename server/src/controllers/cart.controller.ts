@@ -167,3 +167,17 @@ export const updateCartItem: RequestHandler = TryCatch(
     res.json({ success: true });
   }
 );
+
+export const clearCart: RequestHandler = TryCatch(async (req, res, next) => {
+  const cart = await Cart.findOne({ userId: req.user.id });
+
+  if (!cart) {
+    return next(new ErrorHandler("Cart not found", 404));
+  }
+
+  cart.items = [];
+
+  await cart.save();
+
+  res.json({ success: true });
+});

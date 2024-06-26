@@ -5,6 +5,7 @@ import React from "react";
 import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
 import { createOrder } from "@/services/orders";
 import { toast } from "sonner";
+import { useServerCart } from "@/store/use-server-cart";
 
 const TAXES_PERCENTAGE = 18;
 
@@ -13,8 +14,6 @@ export default function ProceedPayment() {
     totalAmount: total,
     items,
     user,
-    setOpenAuthModal,
-    openAuthModal,
     verifyCoupon,
     finalTotal,
     discountTotal,
@@ -29,6 +28,8 @@ export default function ProceedPayment() {
   const [discountError, setDiscountError] = React.useState("");
   const [couponCode, setCouponCode] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+
+  const serverCart = useServerCart();
 
   const handleCoupon = async () => {
     if (!couponCode) {
@@ -67,8 +68,8 @@ export default function ProceedPayment() {
 
   React.useEffect(() => {
     if (discountPercentage !== null) {
-      setFinalTotal(grandWithDiscountTotal);
-      setDiscountTotal(discountAmount);
+      setFinalTotal(grandWithoutDiscountTotal);
+      setDiscountTotal(grandWithDiscountTotal);
     } else {
       setFinalTotal(grandWithoutDiscountTotal);
       setDiscountTotal(0);
@@ -84,14 +85,18 @@ export default function ProceedPayment() {
 
       setLoading(true);
 
+      // console.log(finalTotal, discountTotal);
+
       const res = await createOrder({
         orderItems: items,
         address: selectedAddress?._id!,
-        finalTotal: grandWithDiscountTotal,
-        discountTotal: discountAmount ? discountAmount : 0,
+        finalTotal: finalTotal,
+        discountTotal: discountTotal,
       });
       if (res.data.paymentUrl) {
         window.location.href = res.data.paymentUrl;
+        // clear cart
+        serverCart.clearCart();
       }
       setLoading(false);
     } catch (e) {

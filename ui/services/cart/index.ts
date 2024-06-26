@@ -54,3 +54,8 @@ export const updateCartItem = async (type: string, id: string) => {
   );
   return res.data;
 };
+
+export const clearCart = async () => {
+  const res = await axiosInstance.put(`cart/clear-cart`);
+  return res.data;
+};

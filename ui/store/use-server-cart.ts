@@ -1,5 +1,6 @@
 import {
   addMultipleItems,
+  clearCart,
   createNewCart,
   deleteCartItem,
   getCartItems,
@@ -20,6 +21,7 @@ export interface CartState {
   getCartItems: () => Promise<void>; // Change return type to Promise<void>
   removeItem: (id: string) => void;
   handleUpdate: (type: string, id: string) => void;
+  clearCart: () => void;
 }
 
 export const useServerCart = create<CartState>((set, get) => ({
@@ -105,5 +107,14 @@ export const useServerCart = create<CartState>((set, get) => ({
         toast.error("An error occurred");
       }
     } // Implement this function
+  },
+
+  clearCart: async () => {
+    const res = await clearCart();
+
+    if (res) {
+      set({ items: [] });
+      return; // Return void
+    }
   },
 }));

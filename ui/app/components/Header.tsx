@@ -37,16 +37,17 @@ function Header() {
   const [queryText, setQueryText] = useState("");
   const [searchResults, setSearchResults] = useState<ProductType[]>([]);
 
-  const pathname = window.location.pathname;
-
   const checkPathName = React.useMemo(() => {
     let res = false;
-    if (pathname.includes("/product")) {
+    if (
+      typeof window !== "undefined" &&
+      window?.location?.pathname === "/product"
+    ) {
       res = true;
     }
 
     return res;
-  }, [pathname]);
+  }, []);
 
   useEffect(() => {
     if (openLogin) {
@@ -56,7 +57,7 @@ function Header() {
     return () => {
       setOpenAuthModal(false);
     };
-  }, []);
+  }, [openLogin]);
 
   useEffect(() => {
     (async () => {

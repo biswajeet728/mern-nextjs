@@ -97,3 +97,56 @@ export interface SingleAddress {
     _id: string;
   };
 }
+
+export interface Image {
+  url: string;
+  public_id: string;
+  _id: string;
+}
+
+export interface OrderItem {
+  productId: string;
+  name: string;
+  price: number;
+  images: Image[];
+  category: string;
+  quantity: number;
+  _id: string;
+}
+
+export interface Address {
+  fullName: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: number;
+  phone: number;
+  landmark?: string;
+  isDefault: boolean;
+  _id: string;
+}
+
+export interface User {
+  username: string;
+  email: string;
+  phone?: string | null;
+  bio?: string | null;
+  isSocialLogin: boolean;
+  googlePicture?: string | null;
+  _id: string;
+}
+
+export interface ResponseOrder {
+  _id: string;
+  orderItems: OrderItem[];
+  address: Address;
+  user: User;
+  discountTotal: number;
+  finalTotal: number;
+  orderStatus: string;
+  paymentStatus: string;
+  paymentId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

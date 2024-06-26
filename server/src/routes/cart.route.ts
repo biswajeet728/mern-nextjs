@@ -3,6 +3,7 @@ import express from "express";
 import { isAuthenticated } from "@/middlewares/auth.middleware";
 import {
   addMultipleItemsToCart,
+  clearCart,
   createNewCart,
   deleteCartItem,
   getCartItems,
@@ -18,5 +19,6 @@ router.get("/", isAuthenticated, getCartItems);
 router.post("/get-cart-items", getProductsByIds);
 router.post("/remove-cart-item", isAuthenticated, deleteCartItem);
 router.put("/update-cart-item", isAuthenticated, updateCartItem);
+router.put("/clear-cart", isAuthenticated, clearCart);
 
 export default router;

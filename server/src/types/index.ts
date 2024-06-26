@@ -121,7 +121,6 @@ export interface Coupon {
 export enum OrderStatus {
   RECEIVED = "received",
   CONFIRMED = "confirmed",
-  PREPARING = "preparing",
   OUT_FOR_DELIVERY = "out_for_deliver",
   DELIVERED = "delivered",
 }

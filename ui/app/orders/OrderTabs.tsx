@@ -13,41 +13,54 @@ import { MdCheckBox, MdLocalShipping } from "react-icons/md";
 import { LuContainer } from "react-icons/lu";
 import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import Confirmed from "./components/Confirmed";
-import Shipped from "./components/Shipped";
 import OutForDelivery from "./components/OutForDelivery";
 import Delivered from "./components/Delivered";
+import { ResponseOrder } from "@/types";
+import Received from "./components/Received";
 
 // order status = confirmed, shipped, out for delivery, delivered
 
-export function OrderTabs() {
+interface Props {
+  receivedOrders: ResponseOrder[];
+  confirmedOrders: ResponseOrder[];
+  outForDeliveryOrders: ResponseOrder[];
+  deliveredOrders: ResponseOrder[];
+}
+
+export function OrderTabs({
+  receivedOrders,
+  confirmedOrders,
+  outForDeliveryOrders,
+  deliveredOrders,
+}: Props) {
   const data = [
+    {
+      label: "Received",
+      value: "received",
+      icon: LuContainer,
+      desc: <Received receivedOrders={receivedOrders} />,
+    },
     {
       label: "Confirmed",
       value: "confirmed",
       icon: MdCheckBox,
-      desc: <Confirmed />,
-    },
-    {
-      label: "Shipped",
-      value: "shipped",
-      icon: LuContainer,
-      desc: <Shipped />,
+      desc: <Confirmed confirmedOrders={confirmedOrders} />,
     },
     {
       label: "Out for Delivery",
       value: "out-for-delivery",
       icon: MdLocalShipping,
-      desc: <OutForDelivery />,
+      desc: <OutForDelivery outForDeliveryOrders={outForDeliveryOrders} />,
     },
     {
       label: "Delivered",
       value: "delivered",
       icon: ClipboardDocumentCheckIcon,
-      desc: <Delivered />,
+      desc: <Delivered deliveredOrders={deliveredOrders} />,
     },
   ];
 
-  const [activeTab, setActiveTab] = React.useState("confirmed");
+  const [activeTab, setActiveTab] = React.useState("received");
 
   return (
     <>
