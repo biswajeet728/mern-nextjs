@@ -43,6 +43,12 @@ cloudinary.v2.config({
   api_secret: config.CLOUDINARY_API_SECRET,
 });
 
+// test route
+
+app.get("/", (req, res) => {
+  res.send("Hello from express");
+});
+
 // routes
 app.use("/api/auth", authRoute);
 app.use("/api/profile", profileRoute);
