@@ -70,6 +70,12 @@ function Address({ addressList }: { addressList: AddressType | null }) {
       </div>
 
       <div className="flex flex-wrap gap-3">
+        {addressList?.items?.length === 0 && (
+          <div className="w-full text-center">
+            <p className="text-gray-800 mons">No address found!</p>
+          </div>
+        )}
+
         {addressList?.items?.map((item, index) => (
           <div
             className="relative h-[170px] w-full md:w-[240px] bg-gray-100 shadow-sm border border-gray-200 p-2"

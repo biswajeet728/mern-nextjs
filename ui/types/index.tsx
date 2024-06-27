@@ -14,6 +14,8 @@ export interface ProfileType {
     url: string;
   };
   bio?: string;
+  isSocialLogin?: boolean;
+  googlePicture?: string;
 }
 
 export interface Profile {

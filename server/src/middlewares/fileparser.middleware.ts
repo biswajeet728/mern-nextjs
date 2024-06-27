@@ -10,6 +10,14 @@ declare global {
   }
 }
 
+declare global {
+  namespace Express {
+    interface Request {
+      files: { [key: string]: File | File[] };
+    }
+  }
+}
+
 const fileParser: RequestHandler = async (req, res, next) => {
   const form = formidable();
 

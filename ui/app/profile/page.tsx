@@ -35,9 +35,13 @@ export default async function page() {
 
                 <hr className="hidden md:block border-1 border-blue-gray-100 w-full mt-6" />
 
-                <h4 className="mons font-semibold mt-3">Change Password</h4>
+                {!user?.profile?.isSocialLogin && (
+                  <>
+                    <h4 className="mons font-semibold mt-3">Change Password</h4>
 
-                <ChangePassword />
+                    <ChangePassword />
+                  </>
+                )}
 
                 {/* <div className="hidden md:flex flex-col items-center justify-center h-[200px] bg-gray-100 rounded-md mt-6">
                   <h4 className="mons font-semibold text-lg text-gray-800">

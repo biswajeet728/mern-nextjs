@@ -11,7 +11,7 @@ export default function AvtarBox({
 }: {
   setPic: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const { userProfilePic } = useGlobalStoreContext();
+  const { userProfilePic, user } = useGlobalStoreContext();
   return (
     <div className="h-28 w-28 relative rounded-full">
       <Image
@@ -22,8 +22,9 @@ export default function AvtarBox({
         className="absolute inset-0 w-full h-full rounded-full"
       />
 
-      <div
-        className="
+      {!user?.profile?.isSocialLogin && (
+        <div
+          className="
         absolute
         -bottom-1
         -right-2
@@ -31,22 +32,22 @@ export default function AvtarBox({
         rounded-full
         cursor-pointer
       "
-      >
-        <input
-          type="file"
-          id="img-file"
-          className="hidden"
-          name="files"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              setPic(URL.createObjectURL(file));
-            }
-          }}
-        />
-        <label
-          htmlFor="img-file"
-          className="
+        >
+          <input
+            type="file"
+            id="img-file"
+            className="hidden"
+            name="files"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setPic(URL.createObjectURL(file));
+              }
+            }}
+          />
+          <label
+            htmlFor="img-file"
+            className="
             flex
             items-center
             justify-center
@@ -57,15 +58,11 @@ export default function AvtarBox({
             cursor-pointer
             rounded-full
         "
-        >
-          <IoCloudUploadOutline className="text-white" size="1.1rem" />
-        </label>
-      </div>
-      {/* <IoCloudUploadOutline
-        size={20}
-        className="text-center text-black"
-        id="file"
-      /> */}
+          >
+            <IoCloudUploadOutline className="text-white" size="1.1rem" />
+          </label>
+        </div>
+      )}
     </div>
   );
 }

@@ -92,6 +92,21 @@ export type Image = {
   file: File;
 };
 
+export interface ICategory extends Document {
+  name: string;
+  slug: string;
+  isPublished?: boolean;
+}
+
+export interface Coupon {
+  id: string;
+  title: string;
+  code: string;
+  validUpto: Date;
+  discount: number;
+  updatedAt: Date;
+}
+
 export interface IAddress extends Document {
   user: Schema.Types.ObjectId;
   items: [

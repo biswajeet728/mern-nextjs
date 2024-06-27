@@ -12,6 +12,9 @@ import cartRoute from "@/routes/cart.route";
 import wishlistRoute from "@/routes/wishlist.route";
 import ordersRoute from "@/routes/order.route";
 import paymentRoute from "@/routes/payment.route";
+import productRoute from "@/routes/product.route";
+import categoryRoute from "@/routes/category.route";
+import couponRoute from "@/routes/coupon.route";
 
 // utils
 import { config } from "./utils/helper";
@@ -47,6 +50,9 @@ app.use("/api/cart", cartRoute);
 app.use("/api/wishlist", wishlistRoute);
 app.use("/api/orders", ordersRoute);
 app.use("/api/payment", paymentRoute);
+app.use("/api/products", productRoute);
+app.use("/api/categories", categoryRoute);
+app.use("/api/coupon", couponRoute);
 
 // error handler
 app.use(errorMiddleware);

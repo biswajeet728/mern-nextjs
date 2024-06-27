@@ -7,7 +7,7 @@ import { useGlobalStoreContext } from "../../Providers/GlobalStoreProvider";
 import { toast } from "sonner";
 
 function UpdateProfilePic() {
-  const { updateProfilePicture, pic, setPic, setUserProfilePic } =
+  const { updateProfilePicture, pic, setPic, setUserProfilePic, user } =
     useGlobalStoreContext();
 
   let [isPending, startTransition] = useTransition();
@@ -27,11 +27,13 @@ function UpdateProfilePic() {
     <form action={submitData} className="flex gap-3 items-center">
       <AvtarBox setPic={setPic} />
 
-      <ButtonX
-        title={isPending ? "Uploading..." : "Upload"}
-        pic={pic}
-        pending={isPending}
-      />
+      {!user?.profile?.isSocialLogin && (
+        <ButtonX
+          title={isPending ? "Uploading..." : "Upload"}
+          pic={pic}
+          pending={isPending}
+        />
+      )}
     </form>
   );
 }

@@ -263,6 +263,7 @@ export const googleOauthHandler: RequestHandler = TryCatch(
         isSocialLogin: true,
         verified: googleUser.verified_email,
         googleId: googleUser.id,
+        googlePicture: googleUser.picture,
       });
     }
 

@@ -68,7 +68,7 @@ function Header() {
 
       try {
         const res = await axios.get<ProductResponse>(
-          `${process.env.NEXT_PUBLIC_CATALOGUE_URL}products`,
+          `${process.env.NEXT_PUBLIC_API_URL}products`,
           {
             params: {
               q: queryText,

@@ -10,7 +10,7 @@ export const connectDB = async () => {
     }
 
     const { connection } = await mongoose.connect(URI, {
-      dbName: "next-eccomerce",
+      dbName: config.MONGO_DB,
     });
     console.log(`Connected to MongoDB at ${connection.host}`);
   } catch (err) {

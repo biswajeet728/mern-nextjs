@@ -85,13 +85,20 @@ export const CartProvider: React.FC<{
   const serverCart = useServerCart(); // Assuming this function is defined somewhere
   const wishlist = useWishlist(); // Assuming this function is defined somewhere
 
-  const [userProfilePic, setUserProfilePic] = useState<string>(
-    user?.profile.avatar?.url || "/images/user.png"
-  );
+  const [userProfilePic, setUserProfilePic] =
+    useState<string>("/images/user.png");
   const [pic, setPic] = React.useState<string>("");
   const [selectedAddress, setSelectedAddress] = React.useState<AddressItem>();
   const [finalTotal, setFinalTotal] = React.useState<number>(0);
   const [discountTotal, setDiscountTotal] = React.useState<number>(0);
+
+  useEffect(() => {
+    if (user && user?.profile?.isSocialLogin) {
+      setUserProfilePic(user.profile.googlePicture!);
+    } else {
+      setUserProfilePic(user?.profile?.avatar?.url!);
+    }
+  }, [user]);
 
   const ids = useMemo(
     () =>
@@ -238,7 +245,7 @@ export const CartProvider: React.FC<{
   async function verifyCoupon(code: string) {
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_CATALOGUE_URL}coupon/verify-coupon`,
+        `${process.env.NEXT_PUBLIC_API_URL}coupon/verify-coupon`,
         {
           code,
         },

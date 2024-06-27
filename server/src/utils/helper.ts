@@ -3,6 +3,7 @@ import { cleanEnv, str, num } from "envalid";
 
 export const config = cleanEnv(process.env, {
   MONGO_URI: str(),
+  MONGO_DB: str(),
   NODE_ENV: str({
     choices: ["production", "development"],
     default: "development",

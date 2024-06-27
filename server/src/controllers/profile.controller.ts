@@ -155,9 +155,13 @@ export const addNewAddress: RequestHandler = TryCatch(
 export const getAddresses: RequestHandler = TryCatch(async (req, res) => {
   const addresses = await Address.find({ user: req.user.id }).select("items");
 
+  console.log(req.user.id, "req.user.id");
+
+  console.log(addresses, "addresses");
+
   res.status(200).json({
     success: true,
-    items: addresses.map((address) => address.items)[0],
+    items: addresses.length ? addresses.map((address) => address.items)[0] : [],
   });
 });
 

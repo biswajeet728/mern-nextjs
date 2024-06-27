@@ -12,7 +12,7 @@ export interface ProductSingle {
 
 export const getAllProducts = async (fields?: object) => {
   const res = await axios.get<ResponseProduct>(
-    `${process.env.NEXT_PUBLIC_CATALOGUE_URL}products`,
+    `${process.env.NEXT_PUBLIC_API_URL}products`,
     {
       params: { ...fields },
     }
@@ -22,7 +22,7 @@ export const getAllProducts = async (fields?: object) => {
 
 export const getSingleProduct = async (slug: string) => {
   const res = await axios.get<ProductSingle>(
-    `${process.env.NEXT_PUBLIC_CATALOGUE_URL}products/${slug}`
+    `${process.env.NEXT_PUBLIC_API_URL}products/${slug}`
   );
   return res.data;
 };
