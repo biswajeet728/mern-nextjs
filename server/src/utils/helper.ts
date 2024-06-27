@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { cleanEnv, str, num } from "envalid";
+import { CookieOptions } from "express";
 
 export const config = cleanEnv(process.env, {
   MONGO_URI: str(),
@@ -43,3 +44,9 @@ export class ErrorHandler extends Error {
     this.statusCode = statusCode;
   }
 }
+
+export const cookieOptions: CookieOptions = {
+  httpOnly: true,
+  sameSite: "none",
+  secure: config.NODE_ENV === "development" ? false : true,
+};

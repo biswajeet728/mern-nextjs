@@ -1,7 +1,7 @@
 import { TryCatch } from "@/middlewares/error.middleware";
 import User from "@/models/User";
 import { IUser } from "@/types";
-import { ErrorHandler, config } from "@/utils/helper";
+import { ErrorHandler, config, cookieOptions } from "@/utils/helper";
 import { Request, RequestHandler } from "express";
 import crypto from "crypto";
 import { sendEmail } from "@/utils/features";
@@ -45,12 +45,8 @@ export const createNewUser: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-    });
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-    });
+    res.cookie("refreshToken", refreshToken, cookieOptions);
+    res.cookie("accessToken", accessToken, cookieOptions);
 
     res.status(201).json({
       success: true,
@@ -101,12 +97,8 @@ export const signIn: RequestHandler = TryCatch(async (req, res, next) => {
 
   await user.save();
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-  });
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-  });
+  res.cookie("refreshToken", refreshToken, cookieOptions);
+  res.cookie("accessToken", accessToken, cookieOptions);
 
   res.json({
     success: true,
@@ -164,13 +156,9 @@ export const requestNewAccessToken: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("accessToken", newAccessToken, {
-      httpOnly: true,
-    });
+    res.cookie("accessToken", newAccessToken, cookieOptions);
 
-    res.cookie("refreshToken", newRefreshToken, {
-      httpOnly: true,
-    });
+    res.cookie("refreshToken", newRefreshToken, cookieOptions);
 
     res.json({
       success: true,
@@ -278,13 +266,9 @@ export const googleOauthHandler: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-    });
+    res.cookie("refreshToken", refreshToken, cookieOptions);
 
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-    });
+    res.cookie("accessToken", accessToken, cookieOptions);
 
     res.redirect(config.CLIENT_URL);
   }
