@@ -46,7 +46,7 @@ export class ErrorHandler extends Error {
 }
 
 export const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  sameSite: "none",
+  httpOnly: config.NODE_ENV === "development" ? false : true,
+  sameSite: config.NODE_ENV === "development" ? false : "none",
   secure: config.NODE_ENV === "development" ? false : true,
 };
