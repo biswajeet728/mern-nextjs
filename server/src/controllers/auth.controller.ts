@@ -45,8 +45,14 @@ export const createNewUser: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("refreshToken", refreshToken, cookieOptions);
-    res.cookie("accessToken", accessToken, cookieOptions);
+    res.cookie("refreshToken", refreshToken, {
+      ...cookieOptions,
+      sameSite: true,
+    });
+    res.cookie("accessToken", accessToken, {
+      ...cookieOptions,
+      sameSite: true,
+    });
 
     res.status(201).json({
       success: true,
@@ -97,8 +103,14 @@ export const signIn: RequestHandler = TryCatch(async (req, res, next) => {
 
   await user.save();
 
-  res.cookie("refreshToken", refreshToken, cookieOptions);
-  res.cookie("accessToken", accessToken, cookieOptions);
+  res.cookie("refreshToken", refreshToken, {
+    ...cookieOptions,
+    sameSite: true,
+  });
+  res.cookie("accessToken", accessToken, {
+    ...cookieOptions,
+    sameSite: true,
+  });
 
   res.json({
     success: true,
@@ -156,9 +168,15 @@ export const requestNewAccessToken: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("accessToken", newAccessToken, cookieOptions);
+    res.cookie("accessToken", newAccessToken, {
+      ...cookieOptions,
+      sameSite: true,
+    });
 
-    res.cookie("refreshToken", newRefreshToken, cookieOptions);
+    res.cookie("refreshToken", newRefreshToken, {
+      ...cookieOptions,
+      sameSite: true,
+    });
 
     res.json({
       success: true,
@@ -266,9 +284,15 @@ export const googleOauthHandler: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("refreshToken", refreshToken, cookieOptions);
+    res.cookie("refreshToken", refreshToken, {
+      ...cookieOptions,
+      sameSite: true,
+    });
 
-    res.cookie("accessToken", accessToken, cookieOptions);
+    res.cookie("accessToken", accessToken, {
+      ...cookieOptions,
+      sameSite: true,
+    });
 
     res.redirect(config.CLIENT_URL);
   }
