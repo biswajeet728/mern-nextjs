@@ -96,7 +96,7 @@ export const instantCheckOut: RequestHandler = TryCatch(
     const customer = await stripe.customers.create({
       email: user.email,
       metadata: {
-        userId: user._id.toString(),
+        userId: user._id as string,
         type: "instant-checkout",
         product: JSON.stringify({
           id: product._id,
@@ -133,7 +133,7 @@ export const instantCheckOut: RequestHandler = TryCatch(
       metadata: {
         type: "instant-checkout",
         productId: product._id.toString(),
-        userId: user._id.toString(),
+        userId: user._id as string,
       },
     });
 

@@ -3,7 +3,7 @@ import {
   getProducts,
   getSingleProduct,
 } from "@/controllers/product.controller";
-import { isAdmin } from "@/middlewares/auth.middleware";
+import { isAdmin } from "@/middlewares/admin.middleware";
 import fileParser from "@/middlewares/fileparser.middleware";
 import express from "express";
 

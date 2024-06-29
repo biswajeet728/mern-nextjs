@@ -3,7 +3,7 @@ import {
   getCoupons,
   verifyCouponCode,
 } from "@/controllers/coupon.controller";
-import { isAdmin } from "@/middlewares/auth.middleware";
+import { isAdmin } from "@/middlewares/admin.middleware";
 import express from "express";
 
 const router = express.Router();
