@@ -46,8 +46,8 @@ export class ErrorHandler extends Error {
 }
 
 export const cookieOptions: CookieOptions = {
-  maxAge: 15 * 24 * 60 * 60 * 1000,
+  maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
   sameSite: "none",
   httpOnly: true,
-  secure: true,
+  secure: process.env.NODE_ENV === "production", // Set secure to true only in production
 };
