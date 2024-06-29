@@ -5,16 +5,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "dev": "tsnd --respawn -r tsconfig-paths/register --transpile-only ./src/index.ts",
-    "build": "rimraf ./dist && tsc && tsc-alias",
-    "start": "node ./dist/index.js",
-    "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add ./dist"
+    "build": "tsc && tsc-alias",
+    "start": "node ./dist/index.js"
   },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ],
   "keywords": [],
   "author": "Biswajeet Dash",
   "license": "ISC",
@@ -49,8 +42,6 @@
     "@types/multiparty": "^0.0.36",
     "@types/node": "^20.12.5",
     "@types/nodemailer": "^6.4.14",
-    "pre-commit": "^1.2.2",
-    "rimraf": "^5.0.7",
     "typescript": "^5.4.4"
   }
 }
