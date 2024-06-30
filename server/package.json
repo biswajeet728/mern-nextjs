@@ -4,15 +4,22 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsnd --respawn -r tsconfig-paths/register --transpile-only src/index.ts",
-    "build": "tsc && tsc-alias",
-    "start": "node dist/index.js"
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts"
   },
   "keywords": [],
   "author": "Biswajeet Dash",
   "license": "ISC",
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/formidable": "^3.4.5",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/multiparty": "^0.0.36",
+    "@types/node": "^20.12.5",
+    "@types/nodemailer": "^6.4.14",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.1.0",
@@ -31,15 +38,8 @@
     "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.8",
     "tsconfig-paths": "^4.2.0",
-    "zod": "^3.22.4",
-    "@types/bcrypt": "^5.0.2",
-    "@types/cookie-parser": "^1.4.7",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/multiparty": "^0.0.36",
-    "@types/node": "^20.12.5",
-    "@types/nodemailer": "^6.4.14",
-    "typescript": "^5.4.4"
+    "tsx": "^4.16.0",
+    "typescript": "^5.4.4",
+    "zod": "^3.22.4"
   }
 }
