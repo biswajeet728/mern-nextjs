@@ -50,6 +50,7 @@ export const createNewUser: RequestHandler = TryCatch(
       sameSite: "none",
       httpOnly: true,
       secure: true,
+      domain: ".mern-nextjs-ecommerce.onrender.com",
     });
 
     res.cookie("accessToken", accessToken, {
@@ -57,6 +58,7 @@ export const createNewUser: RequestHandler = TryCatch(
       sameSite: "none",
       httpOnly: true,
       secure: true,
+      domain: ".mern-nextjs-ecommerce.onrender.com",
     });
 
     res.status(201).json({
@@ -113,12 +115,14 @@ export const signIn: RequestHandler = TryCatch(async (req, res, next) => {
     sameSite: "none",
     httpOnly: true,
     secure: true,
+    domain: ".mern-nextjs-ecommerce.onrender.com",
   });
   res.cookie("accessToken", accessToken, {
     maxAge: 15 * 24 * 60 * 60 * 1000,
     sameSite: "none",
     httpOnly: true,
     secure: true,
+    domain: ".mern-nextjs-ecommerce.onrender.com",
   });
 
   res.json({
@@ -182,6 +186,7 @@ export const requestNewAccessToken: RequestHandler = TryCatch(
       sameSite: "none",
       httpOnly: true,
       secure: true,
+      domain: ".mern-nextjs-ecommerce.onrender.com",
     });
 
     res.cookie("refreshToken", newRefreshToken, {
@@ -189,6 +194,7 @@ export const requestNewAccessToken: RequestHandler = TryCatch(
       sameSite: "none",
       httpOnly: true,
       secure: true,
+      domain: ".mern-nextjs-ecommerce.onrender.com",
     });
 
     res.json({
@@ -302,6 +308,7 @@ export const googleOauthHandler: RequestHandler = TryCatch(
       sameSite: "none",
       httpOnly: true,
       secure: true,
+      domain: ".mern-nextjs-ecommerce.onrender.com",
     });
 
     res.cookie("accessToken", accessToken, {
@@ -309,6 +316,7 @@ export const googleOauthHandler: RequestHandler = TryCatch(
       sameSite: "none",
       httpOnly: true,
       secure: true,
+      domain: ".mern-nextjs-ecommerce.onrender.com",
     });
 
     res.redirect(config.CLIENT_URL);
