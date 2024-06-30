@@ -46,19 +46,11 @@ export const createNewUser: RequestHandler = TryCatch(
     await user.save();
 
     res.cookie("refreshToken", refreshToken, {
-      maxAge: 15 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
       httpOnly: true,
-      secure: true,
-      domain: ".mern-nextjs-ecommerce.onrender.com",
     });
 
     res.cookie("accessToken", accessToken, {
-      maxAge: 15 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
       httpOnly: true,
-      secure: true,
-      domain: ".mern-nextjs-ecommerce.onrender.com",
     });
 
     res.status(201).json({
@@ -111,18 +103,10 @@ export const signIn: RequestHandler = TryCatch(async (req, res, next) => {
   await user.save();
 
   res.cookie("refreshToken", refreshToken, {
-    maxAge: 15 * 24 * 60 * 60 * 1000,
-    sameSite: "none",
     httpOnly: true,
-    secure: true,
-    domain: ".mern-nextjs-ecommerce.onrender.com",
   });
   res.cookie("accessToken", accessToken, {
-    maxAge: 15 * 24 * 60 * 60 * 1000,
-    sameSite: "none",
     httpOnly: true,
-    secure: true,
-    domain: ".mern-nextjs-ecommerce.onrender.com",
   });
 
   res.json({
