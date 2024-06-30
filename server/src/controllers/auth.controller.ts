@@ -1,8 +1,8 @@
 import { TryCatch } from "@/middlewares/error.middleware";
 import User from "@/models/User";
 import { IUser } from "@/types";
-import { ErrorHandler, config, cookieOptions } from "@/utils/helper";
-import { CookieOptions, Request, RequestHandler } from "express";
+import { ErrorHandler, config } from "@/utils/helper";
+import { Request, RequestHandler } from "express";
 import crypto from "crypto";
 import { sendEmail } from "@/utils/features";
 import AuthVerificationTokenModel from "@/models/AuthVerficationToken";
@@ -45,8 +45,19 @@ export const createNewUser: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("refreshToken", refreshToken, cookieOptions as CookieOptions);
-    res.cookie("accessToken", accessToken, cookieOptions as CookieOptions);
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+    });
+
+    res.cookie("accessToken", accessToken, {
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+    });
 
     res.status(201).json({
       success: true,
@@ -97,8 +108,18 @@ export const signIn: RequestHandler = TryCatch(async (req, res, next) => {
 
   await user.save();
 
-  res.cookie("refreshToken", refreshToken, cookieOptions as CookieOptions);
-  res.cookie("accessToken", accessToken, cookieOptions as CookieOptions);
+  res.cookie("refreshToken", refreshToken, {
+    maxAge: 15 * 24 * 60 * 60 * 1000,
+    sameSite: "none",
+    httpOnly: true,
+    secure: true,
+  });
+  res.cookie("accessToken", accessToken, {
+    maxAge: 15 * 24 * 60 * 60 * 1000,
+    sameSite: "none",
+    httpOnly: true,
+    secure: true,
+  });
 
   res.json({
     success: true,
@@ -156,9 +177,19 @@ export const requestNewAccessToken: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("accessToken", newAccessToken, cookieOptions as CookieOptions);
+    res.cookie("accessToken", newAccessToken, {
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+    });
 
-    res.cookie("refreshToken", newRefreshToken, cookieOptions as CookieOptions);
+    res.cookie("refreshToken", newRefreshToken, {
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+    });
 
     res.json({
       success: true,
@@ -266,9 +297,19 @@ export const googleOauthHandler: RequestHandler = TryCatch(
 
     await user.save();
 
-    res.cookie("refreshToken", refreshToken, cookieOptions as CookieOptions);
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+    });
 
-    res.cookie("accessToken", accessToken, cookieOptions as CookieOptions);
+    res.cookie("accessToken", accessToken, {
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+    });
 
     res.redirect(config.CLIENT_URL);
   }

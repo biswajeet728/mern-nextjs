@@ -45,9 +45,6 @@ function SignUp({ setOpen, handleFormToggle }: SignUpProps) {
           username: data.username,
           email: data.email,
           password: data.password,
-        },
-        {
-          withCredentials: true,
         }
       );
 

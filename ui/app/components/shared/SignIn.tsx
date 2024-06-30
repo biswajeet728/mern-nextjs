@@ -52,9 +52,6 @@ function SignIn({ setOpen, handleFormToggle }: SignInProps) {
         {
           email: data.email,
           password: data.password,
-        },
-        {
-          withCredentials: true,
         }
       );
 
