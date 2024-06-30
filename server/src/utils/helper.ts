@@ -15,6 +15,7 @@ export const config = cleanEnv(process.env, {
     default: "uhdgufh37y378rhufdjf",
   }),
   CLIENT_URL: str({}),
+  CLIENT_DOMAIN: str({}),
   NEXT_PUBLIC_API_URL: str({}),
   ADMIN_CLIENT_URL: str({}),
   NODEMAILER_USER: str({}),
