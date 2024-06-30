@@ -104,16 +104,16 @@ export const signIn: RequestHandler = TryCatch(async (req, res, next) => {
 
   await user.save();
 
-  //               DAYS * HOUR * MIN * SEC
+  //DAYS * HOUR * MIN * SEC
   const maxAgeValue = 30 * 24 * 60 * 60;
 
   let accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Secure; Max-Age=${maxAgeValue}; SameSite=none; Path=/;`;
   let refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Secure; Max-Age=${maxAgeValue}; SameSite=none; Path=/;`;
 
-  if (config.NODE_ENV === "production") {
-    accessTokenCookie += ` Domain=${config.CLIENT_DOMAIN};`;
-    refreshTokenCookie += ` Domain=${config.CLIENT_DOMAIN};`;
-  }
+  // if (config.NODE_ENV === "production") {
+  //   accessTokenCookie += ` Domain=${config.CLIENT_DOMAIN};`;
+  //   refreshTokenCookie += ` Domain=${config.CLIENT_DOMAIN};`;
+  // }
 
   // Set both cookies in the response header
   res.setHeader("Set-Cookie", [accessTokenCookie, refreshTokenCookie]);
