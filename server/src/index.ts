@@ -30,6 +30,20 @@ app.use(
     origin: [config.CLIENT_URL, config.ADMIN_CLIENT_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: [
+      "Content Type",
+      "Authorization",
+      "Origin",
+      "X-Requested-With",
+      "Accept",
+      "Allow-Control-Allow-Origin",
+      "Access-Control-Allow-Origin",
+      "Access-Control-Allow-Methods",
+      "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Credentials",
+      "Set-Cookie",
+      "Cookie",
+    ],
   })
 );
 app.use(cookieParser());
